@@ -1,7 +1,8 @@
-[gd_scene load_steps=7 format=3 uid="uid://bmh2hiplxhnsk"]
+[gd_scene load_steps=17 format=3 uid="uid://bmh2hiplxhnsk"]
 
 [ext_resource type="PackedScene" uid="uid://bouo7lojo32gq" path="res://level.tscn" id="1_32rnf"]
 [ext_resource type="Script" path="res://world.gd" id="1_mg5q4"]
+[ext_resource type="Script" path="res://UI.gd" id="3_fsty2"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_wywy2"]
 sky_horizon_color = Color(0.64625, 0.65575, 0.67075, 1)
@@ -22,6 +23,108 @@ polygons = [PackedInt32Array(3, 2, 0), PackedInt32Array(0, 2, 1), PackedInt32Arr
 cell_size = 0.1
 cell_height = 0.1
 agent_height = 2.0
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_u88h7"]
+bg_color = Color(0.6, 0.6, 0.6, 0)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_oo5ss"]
+bg_color = Color(0.560784, 0, 0, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_lqcsx"]
+bg_color = Color(0, 0.666667, 0, 1)
+
+[sub_resource type="SystemFont" id="SystemFont_5u8px"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_3lkvq"]
+
+[sub_resource type="Animation" id="Animation_0b4ul"]
+resource_name = "fade_notification"
+length = 4.0
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:theme_override_colors/font_color")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 3, 4),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Color(1, 0, 0, 1), Color(1, 0, 0, 1), Color(1, 0, 0, 0)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath(".:theme_override_colors/font_shadow_color")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 3, 4),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Color(0, 0, 0, 1), Color(0, 0, 0, 1), Color(0, 0, 0, 0)]
+}
+
+[sub_resource type="Animation" id="Animation_sod0j"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:theme_override_colors/font_color")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 0, 0, 1)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath(".:theme_override_colors/font_shadow_color")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(0, 0, 0, 1)]
+}
+
+[sub_resource type="Animation" id="Animation_l1guw"]
+resource_name = "quick_fade"
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:theme_override_colors/font_color")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.3, 1),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Color(1, 0, 0, 1), Color(1, 0, 0, 1), Color(1, 0, 0, 0)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath(".:theme_override_colors/font_shadow_color")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.3, 1),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Color(0, 0, 0, 1), Color(0, 0, 0, 1), Color(0, 0, 0, 0)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_kpjm6"]
+_data = {
+"RESET": SubResource("Animation_sod0j"),
+"fade_notification": SubResource("Animation_0b4ul"),
+"quick_fade": SubResource("Animation_l1guw")
+}
 
 [node name="World" type="Node"]
 script = ExtResource("1_mg5q4")
@@ -76,5 +179,61 @@ text = "Start"
 layout_mode = 2
 text = "Press ESC to quit"
 fit_content = true
+
+[node name="UI" type="CanvasLayer" parent="."]
+script = ExtResource("3_fsty2")
+
+[node name="PanelContainer" type="PanelContainer" parent="UI"]
+offset_left = 32.0
+offset_top = 529.0
+offset_right = 244.0
+offset_bottom = 617.0
+size_flags_horizontal = 4
+size_flags_vertical = 4
+theme_override_styles/panel = SubResource("StyleBoxFlat_u88h7")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="UI/PanelContainer"]
+layout_mode = 2
+size_flags_vertical = 4
+theme_override_constants/separation = 10
+
+[node name="HealthBar" type="ProgressBar" parent="UI/PanelContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_styles/background = SubResource("StyleBoxFlat_oo5ss")
+theme_override_styles/fill = SubResource("StyleBoxFlat_lqcsx")
+value = 50.0
+
+[node name="Ammunition" type="Label" parent="UI/PanelContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_colors/font_shadow_color = Color(1, 1, 1, 1)
+theme_override_colors/font_outline_color = Color(1, 1, 1, 1)
+theme_override_fonts/font = SubResource("SystemFont_5u8px")
+theme_override_font_sizes/font_size = 30
+text = "10 / 10"
+horizontal_alignment = 1
+
+[node name="NotificationLabel" type="PanelContainer" parent="UI"]
+offset_left = 188.0
+offset_top = 95.0
+offset_right = 955.0
+offset_bottom = 181.0
+theme_override_styles/panel = SubResource("StyleBoxEmpty_3lkvq")
+
+[node name="Label" type="Label" parent="UI/NotificationLabel"]
+light_mask = 0
+layout_mode = 2
+mouse_filter = 0
+theme_override_colors/font_color = Color(1, 0, 0, 1)
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 60
+text = "Some Text for the Player..."
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="UI/NotificationLabel/Label"]
+libraries = {
+"": SubResource("AnimationLibrary_kpjm6")
+}
 
 [connection signal="pressed" from="CanvasLayer/MainMenu/MarginContainer/VBoxContainer/StartButton" to="." method="_on_start_button_pressed"]

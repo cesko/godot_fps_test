@@ -1,101 +1,112 @@
 class_name FiniteStateMachine 
 
-var _states = {}		# Dict of state names (strings) to FiniteState objects 
-var _transitions = {}	# Dict of state names to array of transitions 
-var _current_state:String = ""
-var _manual_transition = false
+var _n_states:int = 0
+var _states := []		
+var _transitions := []	
+var _wildcard_transitions := []	
+var _current_state:int = -2
+var _manual_transition:bool = false
 
-const WILDCARD = "*"
+const WILDCARD := -1
 
-func logprint(str:String):
-	pass # print(str)
+var _transitioned = false
 
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-func process():
-	if _current_state == "":
-		return
+func logprint(s:String):
+	# print(s)
+	pass
+
+func check_transitions():
+	_transitioned = false
 	
-	var transitioned = false
+	if _current_state < 0:
+		return
 	
 	if _manual_transition:
 		_manual_transition = false
-		transitioned = true
-		logprint("Manually transitioned to '" + _current_state + "'")
+		_transitioned = true
+		logprint("Manually transitioned to '" + str(_current_state) + "'")
 		
 	else: 
 		var transition_candidates = []
-		if _current_state in _transitions:
+		if not _transitions[_current_state].is_empty():
 			transition_candidates = _transitions[_current_state]	
-		if WILDCARD in _transitions:
+		if not _wildcard_transitions.is_empty():
 			# Skip Wildcards that transition to the current state
-			for t in _transitions[WILDCARD]:
+			for t in _wildcard_transitions:
 				if t.getTo() != _current_state:
 					transition_candidates.append(t)
 			
 		if transition_candidates.is_empty():
-			logprint("WARN: no transitions from current state (" + _current_state + ")")
+			logprint("WARN: no transitions from current state (" + str(_current_state) + ")")
 		
 		# handle transitions
-		logprint("Handle transitions from current state '" + _current_state + "'")
+		logprint("Handle transitions from current state '" + str(_current_state) + "'")
 		for t in transition_candidates:
 			if t.check() == true:
 				var next_state = t.getTo()
-				logprint("Found transition to '" + next_state + "'")
-				if next_state in _states:
+				logprint("Found transition to '" + str(next_state) + "'")
+				if isValidState(next_state):
 					_current_state = next_state
-					transitioned = true
+					_transitioned = true
 					break
 				else:
-					logprint("ERR: next state '" + next_state + "' does not exist!")
+					logprint("ERR: next state '" + str(next_state) + "' does not exist!")
 		
-
+func execute():
 	# execute state
-	if transitioned:
-		logprint("Entering state '" + _current_state + "'")
+	if _transitioned:
+		logprint("Entering state '" + str(_current_state) + "'")
 		_states[_current_state].enter()
 	else:
 		logprint("no transition")
-		logprint("Update state '" + _current_state + "'")
+		logprint("Update state '" + str(_current_state) + "'")
 		_states[_current_state].update()
 		
 	
-func newState(name:String):
-	if name == WILDCARD:
-		logprint("State name '" + name + "' invalid!")
-		return
-	
-	if name not in _states:
-		_states[name] = FiniteState.new()
-		logprint("added state '" + name + "'")
-		if _current_state == "":
-			_current_state = name
-			logprint("state '" + name + "' is now the initial state")
-	else:
-		logprint ("WARN: State with name '" + name + "' already exists.")
+func newState() -> int:
+	_states.append(FiniteState.new())
+	_transitions.append([])
+	logprint("added state no. " + str(_n_states))
+	if _current_state < 0:
+		_current_state = _n_states
+		logprint("state no. " + str(_n_states) + " is now the initial state")
+	_n_states += 1
+	return _n_states-1
 
-func getState(name:String) -> FiniteState:
-	if name in _states:
-		return _states[name]
+func getState(id:int) -> FiniteState:
+	if isValidState(id):
+		return _states[id]
 	else:
-		logprint ("ERROR: State with name '" + name + "' not found")
+		logprint ("ERROR: No state with id " + str(id) + " found")
 		return null
 
-func setCurrentState(name:String):
-	_current_state = name
+func setCurrentState(id:int):
+	if isValidState(id):
+		_current_state = id
+	else:
+		logprint ("ERROR: No state with id " + str(id) + " found")
 
-func newTransition(from:String, to:String, condition:Callable):
-	if to in [WILDCARD]:
-		logprint("State name '" + to + "' invalid!")
-		
-	if from not in _transitions:
-		_transitions[from] = Array()
-	_transitions[from].append(FiniteStateTransition.new(to, condition))
-	logprint("added transition from state '" + from + "' to '" + to + "'")
+func newTransition(from:int, to:int, condition:Callable):
+	logprint("add transition from state " + str(from) + " to " + str(to))
 	
-func manualTransition(to:String):
+	if not isValidState(to):
+		logprint ("ERROR: No state with id " + str(to) + " found")
+		return
+
+	if isValidState(from):
+		_transitions[from].append(FiniteStateTransition.new(to, condition))
+	elif from == WILDCARD:
+		_wildcard_transitions.append(FiniteStateTransition.new(to, condition))
+	else:
+		logprint ("ERROR: No state with id " + str(from) + " found")
+	
+	
+func manualTransition(to:int):
 	_manual_transition = true
 	_current_state = to
 	
-func isState(name:String):
-	return _current_state == name
-	
+func isCurrentState(id:int):
+	return _current_state == id
+
+func isValidState(id:int):
+	return id >= 0 and id < _n_states

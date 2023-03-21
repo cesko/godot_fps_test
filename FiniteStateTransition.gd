@@ -1,7 +1,7 @@
 class_name FiniteStateTransition
 
 # var _from:FiniteState # not really required
-var _to:String
+var _to:int
 var _condition:Callable
 
 #func _init(from:FiniteState, to:FiniteState, condition:Callable):
@@ -9,7 +9,7 @@ var _condition:Callable
 #	_to = to
 #	_condition = condition
 
-func _init(to:String, condition:Callable):
+func _init(to:int, condition:Callable):
 	_to = to
 	_condition = condition
 	
@@ -19,5 +19,5 @@ func check() -> bool:
 	else:
 		return false
 
-func getTo() -> String:
+func getTo() -> int:
 	return _to
