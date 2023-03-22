@@ -8,14 +8,18 @@ signal attack_player(damage:float)
 
 var SPEED = 3.0
 var ATTACK_RANGE = 1.5
+var DAMAGE = 1.0
 
 var gravity = ProjectSettings.get_setting("physics/3d/default_gravity")
 
 var health = 3.0
+var health_max = 3.0
 
 var fsm := FiniteStateMachine.new()
 
 var alive = true
+
+var base_color:Color = Color(100.0/255, 150.0/255, 50.0/255)
 
 #States
 var STATE_SPAWNING
@@ -108,6 +112,8 @@ func _ready():
 	fsm.newTransition(STATE_ATTACKING, STATE_MOVING, fsm_attacking_transto_moving)
 	fsm.newTransition(FiniteStateMachine.WILDCARD, STATE_DYING, fsm_all_transto_dying)
 	fsm.newTransition(STATE_TAKING_DAMAGE, STATE_MOVING, fsm_taking_damage_transto_moving)
+	
+	changeColor(base_color)
 
 func _process(delta):
 	fsm.check_transitions()
@@ -126,14 +132,30 @@ func update_target_location(target_location):
 func attack():
 	anim_player.stop()
 	anim_player.play("Attack")
-	attack_player.emit(1.0)
+	attack_player.emit(DAMAGE)
 	
 
 func take_damage(damage):
 	health -= damage
-	print("hit! health=" + str(health))
+	
+	# print("hit! health=" + str(health))
+	changeColor(base_color*health/health_max)
 	fsm.manualTransition(STATE_TAKING_DAMAGE)
 #	await anim_player.animation_finished 
 
 func isAlive() -> bool:
 	return alive
+
+func getAllChildren(in_node,arr:=[]):
+	arr.push_back(in_node)
+	for child in in_node.get_children():
+		arr = getAllChildren(child,arr)
+	return arr
+
+func changeColor(c:Color) -> void:
+	var children = getAllChildren(self)
+	for child in children:
+		if child is MeshInstance3D:
+			var mat = StandardMaterial3D.new()
+			mat.albedo_color = c
+			child.set_material_override(mat)

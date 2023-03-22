@@ -1,0 +1,84 @@
+[gd_scene load_steps=7 format=3 uid="uid://wsl020edt1a5"]
+
+[ext_resource type="Script" path="res://health_pickup.gd" id="1_54rih"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_0cgmm"]
+albedo_color = Color(0, 0.4, 0.0352941, 1)
+
+[sub_resource type="BoxMesh" id="BoxMesh_s73ft"]
+material = SubResource("StandardMaterial3D_0cgmm")
+size = Vector3(0.2, 0.1, 0.15)
+
+[sub_resource type="Animation" id="Animation_bqmbc"]
+resource_name = "Float"
+length = 2.0
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("MeshInstance3D:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 1, 2),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Vector3(0, 0, 0), Vector3(0, 0.1, 0), Vector3(0, 0, 0)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("MeshInstance3D:rotation")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 1, 2),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Vector3(0, 0, 0), Vector3(0, 3.14159, 0), Vector3(0, 6.28319, 0)]
+}
+
+[sub_resource type="Animation" id="Animation_rrdpi"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("MeshInstance3D:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(0, 0, 0)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("MeshInstance3D:rotation")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(0, 0, 0)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_0bvhl"]
+_data = {
+"Float": SubResource("Animation_bqmbc"),
+"RESET": SubResource("Animation_rrdpi")
+}
+
+[node name="HealthPickUp" type="Node3D"]
+script = ExtResource("1_54rih")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+mesh = SubResource("BoxMesh_s73ft")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+autoplay = "Float"
+libraries = {
+"": SubResource("AnimationLibrary_0bvhl")
+}

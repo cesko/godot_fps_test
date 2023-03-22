@@ -1,4 +1,4 @@
-[gd_scene load_steps=19 format=3 uid="uid://coegmh6bmia8e"]
+[gd_scene load_steps=21 format=3 uid="uid://coegmh6bmia8e"]
 
 [ext_resource type="Script" path="res://zombie.gd" id="1_s1gf2"]
 [ext_resource type="Script" path="res://HeadHitbox.gd" id="2_jtghp"]
@@ -9,23 +9,31 @@ albedo_color = Color(0.376471, 0.576471, 0.219608, 1)
 
 [sub_resource type="CapsuleMesh" id="CapsuleMesh_gj5mv"]
 material = SubResource("StandardMaterial3D_qa7va")
-radius = 0.4
+radius = 0.2
 height = 1.5
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_gfxlp"]
-albedo_color = Color(0.376471, 0.576471, 0.219608, 1)
+albedo_color = Color(0.392157, 0.588235, 0.196078, 1)
 
 [sub_resource type="SphereMesh" id="SphereMesh_mflfg"]
 material = SubResource("StandardMaterial3D_gfxlp")
-radius = 0.4
-height = 0.8
+radius = 0.2
+height = 0.4
 
 [sub_resource type="SphereShape3D" id="SphereShape3D_ljs3k"]
-radius = 0.424552
+radius = 0.245253
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_ldqpj"]
-radius = 0.417478
-height = 1.55907
+radius = 0.257177
+height = 1.53637
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_67rti"]
+albedo_color = Color(0.376471, 0.576471, 0.219608, 1)
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_8uvvw"]
+material = SubResource("StandardMaterial3D_67rti")
+radius = 0.05
+height = 0.5
 
 [sub_resource type="Animation" id="Animation_jxpni"]
 resource_name = "Attack"
@@ -258,8 +266,8 @@ _data = {
 }
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_mwuge"]
-radius = 0.443024
-height = 1.75608
+radius = 0.3956
+height = 1.46319
 
 [node name="Zombie" type="CharacterBody3D" groups=["Zombies"]]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
@@ -291,7 +299,16 @@ collision_mask = 0
 script = ExtResource("3_gsiyx")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="BodyBesh/BodyHitbox"]
+transform = Transform3D(0.999874, 0, -0.0158469, 0, 1, 0, 0.0158469, 0, 0.999874, 0, 0.180954, 0)
 shape = SubResource("CapsuleShape3D_ldqpj")
+
+[node name="LeftArm" type="MeshInstance3D" parent="BodyBesh"]
+transform = Transform3D(1, 0, 0, 0, -0.222791, 0.974866, 0, -0.974866, -0.222791, -0.22113, 0.49292, -0.233828)
+mesh = SubResource("CapsuleMesh_8uvvw")
+
+[node name="LeftArm2" type="MeshInstance3D" parent="BodyBesh"]
+transform = Transform3D(1, 0, 0, 0, -0.222791, 0.974866, 0, -0.974866, -0.222791, 0.207541, 0.49292, -0.233828)
+mesh = SubResource("CapsuleMesh_8uvvw")
 
 [node name="NavigationAgent3D" type="NavigationAgent3D" parent="."]
 navigation_layers = 3
@@ -305,5 +322,5 @@ libraries = {
 }
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.128418, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.0714719, 0)
 shape = SubResource("CapsuleShape3D_mwuge")

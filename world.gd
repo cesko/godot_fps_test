@@ -104,6 +104,22 @@ func add_zombie():
 	_current_number_of_enemies += 1
 	_total_number_of_enemies += 1
 	
+	# randomly create a special zombie
+	var special_zombies = rng.randf()
+	if special_zombies > .8 and special_zombies <= .9:
+		zombies[-1].SPEED = 6
+		zombies[-1].base_color = Color(150.0/255, 100.0/255, 50.0/255)
+		zombies[-1].changeColor(zombies[-1].base_color)
+	elif special_zombies > .9:
+		zombies[-1].SPEED = 2.5
+		zombies[-1].base_color = Color(100.0/255, 100.0/255, 50.0/255)
+		zombies[-1].health = 11
+		zombies[-1].health_max = 11
+		zombies[-1].DAMAGE = 2
+		zombies[-1].scale = Vector3(1.3, 1.2, 1.3)
+		zombies[-1].changeColor(zombies[-1].base_color)
+	
+	
 func player_killed():
 	ui_canvas.player_notification("YOU DIED")
 	
