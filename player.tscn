@@ -89,6 +89,45 @@ tracks/3/keys = {
 "values": [Vector3(0, 0, 0)]
 }
 
+[sub_resource type="Animation" id="Animation_uj1uq"]
+resource_name = "dying"
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Camera3D:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.5),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector3(0, 1.50509, 0), Vector3(0, 0.92249, 0)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Camera3D:rotation")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.5),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector3(0, 0, 0), Vector3(0, 0, 1.11881)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("Camera3D/pistol:position")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0, 0.5),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector3(0.721418, -0.442301, -0.664775), Vector3(-0.513346, -1.04179, -0.664775)]
+}
+
 [sub_resource type="Animation" id="Animation_xqd4w"]
 resource_name = "idle"
 length = 3.0
@@ -135,35 +174,6 @@ tracks/0/keys = {
 "values": [Vector3(0.721418, -0.442301, -0.664775), Vector3(0.683787, -0.405305, -0.664775), Vector3(0.721418, -0.442301, -0.664775), Vector3(0.774893, -0.4045, -0.664775)]
 }
 
-[sub_resource type="Animation" id="Animation_puljm"]
-resource_name = "shoot"
-length = 0.2
-step = 0.05
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath("Camera3D/pistol:position")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0, 0.2),
-"transitions": PackedFloat32Array(0.5, 1),
-"update": 0,
-"values": [Vector3(0.721418, -0.34381, -0.61303), Vector3(0.721418, -0.442301, -0.664775)]
-}
-tracks/1/type = "value"
-tracks/1/imported = false
-tracks/1/enabled = true
-tracks/1/path = NodePath("Camera3D/pistol:rotation")
-tracks/1/interp = 1
-tracks/1/loop_wrap = true
-tracks/1/keys = {
-"times": PackedFloat32Array(0, 0.2),
-"transitions": PackedFloat32Array(0.5, 1),
-"update": 0,
-"values": [Vector3(-0.0317268, 1.60913, 0.690782), Vector3(0, 1.62141, 0)]
-}
-
 [sub_resource type="Animation" id="Animation_i8x7r"]
 resource_name = "reload"
 length = 1.5
@@ -192,43 +202,33 @@ tracks/1/keys = {
 "values": [Vector3(0, 1.62141, 0), Vector3(0.0505958, 1.56945, -1.59741), Vector3(0.0505958, 1.56945, -1.59741), Vector3(0, 1.62141, 0)]
 }
 
-[sub_resource type="Animation" id="Animation_uj1uq"]
-resource_name = "dying"
+[sub_resource type="Animation" id="Animation_puljm"]
+resource_name = "shoot"
+length = 0.1
+step = 0.05
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
-tracks/0/path = NodePath("Camera3D:position")
+tracks/0/path = NodePath("Camera3D/pistol:position")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
-"times": PackedFloat32Array(0, 0.5),
-"transitions": PackedFloat32Array(1, 1),
+"times": PackedFloat32Array(0, 0.1),
+"transitions": PackedFloat32Array(0.5, 1),
 "update": 0,
-"values": [Vector3(0, 1.50509, 0), Vector3(0, 0.92249, 0)]
+"values": [Vector3(0.721418, -0.34381, -0.61303), Vector3(0.721418, -0.442301, -0.664775)]
 }
 tracks/1/type = "value"
 tracks/1/imported = false
 tracks/1/enabled = true
-tracks/1/path = NodePath("Camera3D:rotation")
+tracks/1/path = NodePath("Camera3D/pistol:rotation")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/keys = {
-"times": PackedFloat32Array(0, 0.5),
-"transitions": PackedFloat32Array(1, 1),
+"times": PackedFloat32Array(0, 0.1),
+"transitions": PackedFloat32Array(0.5, 1),
 "update": 0,
-"values": [Vector3(0, 0, 0), Vector3(0, 0, 1.11881)]
-}
-tracks/2/type = "value"
-tracks/2/imported = false
-tracks/2/enabled = true
-tracks/2/path = NodePath("Camera3D/pistol:position")
-tracks/2/interp = 1
-tracks/2/loop_wrap = true
-tracks/2/keys = {
-"times": PackedFloat32Array(0, 0.5),
-"transitions": PackedFloat32Array(1, 1),
-"update": 0,
-"values": [Vector3(0.721418, -0.442301, -0.664775), Vector3(-0.513346, -1.04179, -0.664775)]
+"values": [Vector3(-0.0317268, 1.60913, 0.690782), Vector3(0, 1.62141, 0)]
 }
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_u4ax7"]
@@ -241,7 +241,7 @@ _data = {
 "shoot": SubResource("Animation_puljm")
 }
 
-[node name="Player" type="CharacterBody3D"]
+[node name="Player" type="CharacterBody3D" groups=["Player"]]
 collision_mask = 3
 script = ExtResource("1_yn6bn")
 
@@ -272,7 +272,7 @@ draw_pass_1 = SubResource("PlaneMesh_2nuug")
 
 [node name="RayCast3D" type="RayCast3D" parent="Camera3D"]
 target_position = Vector3(0, 0, -50)
-collision_mask = 2
+collision_mask = 4
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 autoplay = "idle"

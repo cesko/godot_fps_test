@@ -1,11 +1,15 @@
 extends Node
 
+@onready var level = $NavigationRegion3D/level
 @onready var main_menu = $CanvasLayer/MainMenu
 @onready var ui_canvas = $UI
-var rng = RandomNumberGenerator.new()
+@onready var health_pickup = $NavigationRegion3D/level/HealthPickUp
+@onready var ammu_pickup = $NavigationRegion3D/level/AmmuPickUp
 
 const Player = preload("res://player.tscn")
 const Zombie = preload("res://zombie.tscn")
+
+var rng = RandomNumberGenerator.new()
 
 var player = null
 
@@ -26,6 +30,7 @@ func _ready():
 	_levels.append(Level.new(10,3))
 	_levels.append(Level.new(20,5))
 	_levels.append(Level.new(40,10))
+	_levels.append(Level.new(40,20))
 
 func _process(delta):
 	if running:
@@ -39,7 +44,7 @@ func _process(delta):
 					ui_canvas.player_notification("You Survived!")
 		else:
 			if _current_number_of_enemies < _levels[_level_counter]._max_enemies:
-				add_zombie(get_random_spawn_location())
+				add_zombie()
 		#var all_zombies = get_tree().get_nodes_in_group("zombies")
 		for z in zombies:
 			if z.isAlive() == false:
@@ -82,21 +87,20 @@ func add_player(peer_id):
 	player = Player.instantiate()
 	player.name = str(peer_id)
 	add_child(player)
-	player.global_transform.origin = Vector3(0, 3, 6)
+	player.global_transform = level.getPlayerSpawn() # .origin = Vector3(0, 3, 6)
 	player.killed.connect(player_killed)
 	ui_canvas.set_player(player)
-
-func get_random_spawn_location():
-	var x = rng.randf_range(-3, 3)
-	var z = rng.randf_range(-3, 3)
 	
-	return Vector3(x, 1, z)
+	health_pickup.player=player
+	ammu_pickup.player=player
 	
-func add_zombie(spawn_location):
+func add_zombie():
 	zombies.append(Zombie.instantiate())
 	add_child(zombies[-1])
-	zombies[-1].global_transform.origin = spawn_location
+	zombies[-1].global_transform = level.getZombieSpawn(player.global_transform.origin)
 	zombies[-1].attack_player.connect(player.take_damage)
+	var r = rng.randf_range(.9, 1.1)
+	zombies[-1].scale = Vector3(r, r, r)
 	_current_number_of_enemies += 1
 	_total_number_of_enemies += 1
 	

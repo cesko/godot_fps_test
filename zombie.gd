@@ -5,12 +5,13 @@ signal attack_player(damage:float)
 @onready var nav_agent = $NavigationAgent3D
 @onready var anim_player = $AnimationPlayer
 @onready var collision_shape = $CollisionShape3D
-@onready var mesh = $MeshInstance3D
 
 var SPEED = 3.0
 var ATTACK_RANGE = 1.5
 
-var health = 2.0
+var gravity = ProjectSettings.get_setting("physics/3d/default_gravity")
+
+var health = 3.0
 
 var fsm := FiniteStateMachine.new()
 
@@ -37,7 +38,7 @@ func fsm_moving_update():
 	var next_location = nav_agent.get_next_path_position()
 	var new_velocity = (next_location - current_location).normalized() * SPEED
 	
-	velocity = velocity.move_toward(new_velocity, .25)	
+	velocity = velocity.move_toward(new_velocity, .15)	
 	
 	var look_at_position = current_location
 	look_at_position.x += new_velocity.x
@@ -111,11 +112,12 @@ func _ready():
 func _process(delta):
 	fsm.check_transitions()
 
-func _physics_process(delta):
+func _physics_process(delta):		
 	fsm.execute()
 	velocity.x = clamp(velocity.x, -1.5*SPEED, 1.5*SPEED)
 	velocity.y = clamp(velocity.y, -1.5*SPEED, 1.5*SPEED)
 	velocity.z = clamp(velocity.z, -1.5*SPEED, 1.5*SPEED)
+
 	move_and_slide()
 	
 func update_target_location(target_location):

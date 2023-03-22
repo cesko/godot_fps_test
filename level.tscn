@@ -1,15 +1,66 @@
-[gd_scene load_steps=4 format=3 uid="uid://bouo7lojo32gq"]
+[gd_scene load_steps=6 format=3 uid="uid://bouo7lojo32gq"]
 
 [ext_resource type="PackedScene" uid="uid://cnyvnmtngtgbx" path="res://level.blend" id="1_4ej84"]
+[ext_resource type="Script" path="res://ZombieLevel.gd" id="2_ivury"]
 [ext_resource type="Texture2D" uid="uid://bws1h4js0g736" path="res://addons/kenney_prototype_textures/light/texture_07.png" id="3_igksx"]
+[ext_resource type="Script" path="res://spawnbox.gd" id="3_sgebe"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_fh2gw"]
 albedo_texture = ExtResource("3_igksx")
 uv1_triplanar = true
 
 [node name="level" instance=ExtResource("1_4ej84")]
+script = ExtResource("2_ivury")
 
 [node name="Level" parent="." index="0"]
 cast_shadow = 2
 surface_material_override/0 = SubResource("StandardMaterial3D_fh2gw")
 surface_material_override/1 = SubResource("StandardMaterial3D_fh2gw")
+
+[node name="PlayerSpawn" type="Node3D" parent="." index="1"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3.36414, 7.91158)
+script = ExtResource("3_sgebe")
+
+[node name="ZombieSpawn01" type="Node3D" parent="." index="2"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.97976, 1, 4.00222)
+script = ExtResource("3_sgebe")
+
+[node name="ZombieSpawn02" type="Node3D" parent="." index="3"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5.29235, 1, 3.22458)
+script = ExtResource("3_sgebe")
+
+[node name="ZombieSpawn03" type="Node3D" parent="." index="4"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 11.71, 4, 7.96416)
+script = ExtResource("3_sgebe")
+
+[node name="ZombieSpawn04" type="Node3D" parent="." index="5"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -10.29, 3, 7.96416)
+script = ExtResource("3_sgebe")
+
+[node name="ZombieSpawn05" type="Node3D" parent="." index="6"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.130929, 2, -3.20677)
+script = ExtResource("3_sgebe")
+
+[node name="ZombieSpawn06" type="Node3D" parent="." index="7"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.5925, 1, 0.782196)
+script = ExtResource("3_sgebe")
+
+[node name="ZombieSpawn07" type="Node3D" parent="." index="8"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5.29235, 1, 1.11491)
+script = ExtResource("3_sgebe")
+
+[node name="ZombieSpawn08" type="Node3D" parent="." index="9"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.075532, 4, 7.96416)
+script = ExtResource("3_sgebe")
+
+[node name="ZombieSpawn09" type="Node3D" parent="." index="10"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.382348, 3, -11.3978)
+script = ExtResource("3_sgebe")
+
+[node name="ZombieSpawn10" type="Node3D" parent="." index="11"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5.95895, 3, -17.194)
+script = ExtResource("3_sgebe")
+
+[node name="ZombieSpawn11" type="Node3D" parent="." index="12"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.04105, 3, -16.194)
+script = ExtResource("3_sgebe")

@@ -11,7 +11,7 @@ const SPEED = 4.5
 const JUMP_VELOCITY = 5
 const ATTACK_DMG = 1
 
-var _alive = truecur
+var _alive = true
 var _health_max:float = 5
 var _health:float = 5
 
@@ -86,8 +86,8 @@ func play_shoot_effects():
 	else:
 		var target = aiming_raycast.get_collider()
 		print ("hit " + target.get_parent().name + "/" + target.name + " (Class: " + target.get_class() + ")")
-		if target.has_method("take_damage"):
-			target.call("take_damage", ATTACK_DMG)
+		if target.has_method("hit"):
+			target.call("hit", ATTACK_DMG)
 	
 	anim_player.stop()
 	anim_player.play("shoot")
@@ -97,10 +97,12 @@ func play_shoot_effects():
 func reload():
 	if _ammu_gun == _ammu_magsize:
 		return
+	if _ammu_reserve <= 0:
+		return
 	else:
 		var ammu_total = _ammu_gun + _ammu_reserve
-		_ammu_gun = _ammu_magsize
-		_ammu_reserve = ammu_total - _ammu_magsize
+		_ammu_gun = clamp(_ammu_magsize, 0, ammu_total)
+		_ammu_reserve = ammu_total - _ammu_gun
 		anim_player.stop()
 		anim_player.play("reload")
 	
