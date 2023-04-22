@@ -1,0 +1,51 @@
+[gd_scene load_steps=9 format=3 uid="uid://cuxg2x3m7huhr"]
+
+[ext_resource type="Texture2D" uid="uid://cewc4jov4lu2k" path="res://addons/kenney_particle_pack/circle_05.png" id="1_7nfwe"]
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_grg1f"]
+radius = 0.05
+
+[sub_resource type="Gradient" id="Gradient_mkp1q"]
+colors = PackedColorArray(1, 1, 1, 1, 1, 1, 1, 0)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_w3ary"]
+gradient = SubResource("Gradient_mkp1q")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_ougsk"]
+gravity = Vector3(0, 0, 0)
+color_ramp = SubResource("GradientTexture1D_w3ary")
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_bybyq"]
+transparency = 1
+vertex_color_use_as_albedo = true
+albedo_color = Color(0.780392, 0, 0.0235294, 1)
+albedo_texture = ExtResource("1_7nfwe")
+use_particle_trails = true
+
+[sub_resource type="RibbonTrailMesh" id="RibbonTrailMesh_0ss40"]
+material = SubResource("StandardMaterial3D_bybyq")
+
+[sub_resource type="Skin" id="Skin_mv2sc"]
+bind_count = 1
+bind/0/name = &""
+bind/0/bone = 0
+bind/0/pose = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0)
+
+[node name="BloodDrop" type="RigidBody3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.030835, 0.169729, 0.145065)
+collision_layer = 0
+collision_mask = 35
+input_ray_pickable = false
+mass = 0.01
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+shape = SubResource("SphereShape3D_grg1f")
+
+[node name="GPUParticles3D" type="GPUParticles3D" parent="."]
+transform = Transform3D(-0.333626, -0.942705, 0, 0.942705, -0.333626, 0, 0, 0, 1, -0.411924, -0.401328, -0.552649)
+lifetime = 0.1
+transform_align = 1
+trail_enabled = true
+process_material = SubResource("ParticleProcessMaterial_ougsk")
+draw_pass_1 = SubResource("RibbonTrailMesh_0ss40")
+draw_skin = SubResource("Skin_mv2sc")

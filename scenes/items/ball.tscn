@@ -1,0 +1,35 @@
+[gd_scene load_steps=9 format=3 uid="uid://dn1anfkanrpdu"]
+
+[ext_resource type="Script" path="res://src/items/item_ball.gd" id="1_oe0tk"]
+[ext_resource type="Texture2D" uid="uid://b8r5eriprfx0b" path="res://addons/kenney_prototype_textures/red/texture_10.png" id="2_kydkd"]
+[ext_resource type="Script" path="res://src/gfx/decal_pool.gd" id="3_fbyq5"]
+[ext_resource type="PackedScene" uid="uid://csv2pyji5vtqu" path="res://scenes/gfx/decal_bullet_hole.tscn" id="4_synx3"]
+
+[sub_resource type="PhysicsMaterial" id="PhysicsMaterial_nbb50"]
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_7y8di"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_qr4t0"]
+albedo_texture = ExtResource("2_kydkd")
+
+[sub_resource type="SphereMesh" id="SphereMesh_qssmb"]
+material = SubResource("StandardMaterial3D_qr4t0")
+
+[node name="Ball" type="RigidBody3D"]
+collision_layer = 2
+collision_mask = 35
+mass = 10.0
+inertia = Vector3(1, 1, 1)
+physics_material_override = SubResource("PhysicsMaterial_nbb50")
+script = ExtResource("1_oe0tk")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+shape = SubResource("SphereShape3D_7y8di")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+mesh = SubResource("SphereMesh_qssmb")
+
+[node name="DecalBulletHoles" type="Node3D" parent="."]
+script = ExtResource("3_fbyq5")
+pool_size = 16
+decal_scene = ExtResource("4_synx3")

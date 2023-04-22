@@ -1,0 +1,24 @@
+[gd_scene load_steps=2 format=3 uid="uid://cxuxmiygm7qfy"]
+
+[ext_resource type="Script" path="res://src/hud/push_notification.gd" id="1_ips3f"]
+
+[node name="PushNotification" type="Control" node_paths=PackedStringArray("label")]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+script = ExtResource("1_ips3f")
+label = NodePath("Label")
+
+[node name="Label" type="Label" parent="."]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 23.0
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+text = "Test
+Multiple Lines are amazing!"

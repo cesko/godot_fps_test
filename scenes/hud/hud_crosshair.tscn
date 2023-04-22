@@ -1,0 +1,27 @@
+[gd_scene load_steps=2 format=3 uid="uid://cate560lesc8y"]
+
+[ext_resource type="Script" path="res://src/hud/crosshair.gd" id="1_wtwp4"]
+
+[node name="Crosshair" type="Node2D"]
+script = ExtResource("1_wtwp4")
+
+[node name="Cross" type="Node2D" parent="."]
+
+[node name="Top" type="Line2D" parent="Cross"]
+points = PackedVector2Array(0, 0, 0, -20)
+width = 2.0
+
+[node name="Right" type="Line2D" parent="Cross"]
+rotation = 1.57079
+points = PackedVector2Array(0, 0, 0, -20)
+width = 2.0
+
+[node name="Down" type="Line2D" parent="Cross"]
+rotation = 3.14159
+points = PackedVector2Array(0, 0, 0, -20)
+width = 2.0
+
+[node name="Left" type="Line2D" parent="Cross"]
+rotation = 4.71238
+points = PackedVector2Array(0, 0, 0, -20)
+width = 2.0

@@ -1,0 +1,19 @@
+[gd_scene load_steps=9 format=3 uid="uid://brgkdhtkem0oa"]
+
+[ext_resource type="Script" path="res://src/gfx/random_decal.gd" id="1_tiyn3"]
+[ext_resource type="Texture2D" uid="uid://6xt87svd4r87" path="res://assets/textures/kenney_splatpack/PNG/Double (512px)/splat00.png" id="4_amoie"]
+[ext_resource type="Texture2D" uid="uid://dbo2yp0xslg20" path="res://assets/textures/kenney_splatpack/PNG/Double (512px)/splat28.png" id="4_chaoo"]
+[ext_resource type="PackedScene" uid="uid://1pi66kn11gia" path="res://scenes/misc/cartesian_frame.tscn" id="4_lynfv"]
+[ext_resource type="Texture2D" uid="uid://cft2d8oyqxemv" path="res://assets/textures/kenney_splatpack/PNG/Double (512px)/splat11.png" id="5_gpjkj"]
+[ext_resource type="Texture2D" uid="uid://dbytjn4do0ksh" path="res://assets/textures/kenney_splatpack/PNG/Double (512px)/splat34.png" id="5_ybsy7"]
+[ext_resource type="Texture2D" uid="uid://ckrbplgjs6d8f" path="res://assets/textures/kenney_splatpack/PNG/Double (512px)/splat09.png" id="6_jcrbi"]
+[ext_resource type="Texture2D" uid="uid://cjgxgvgscfxik" path="res://assets/textures/kenney_splatpack/PNG/Double (512px)/splat20.png" id="7_202v2"]
+
+[node name="decal_blood_splat" type="Decal"]
+size = Vector3(2, 0.1, 2)
+modulate = Color(0.745098, 0, 0.0823529, 1)
+script = ExtResource("1_tiyn3")
+textures = Array[Texture]([ExtResource("4_chaoo"), ExtResource("5_ybsy7"), ExtResource("4_amoie"), ExtResource("5_gpjkj"), ExtResource("6_jcrbi"), ExtResource("7_202v2")])
+
+[node name="CartesianFrame" parent="." instance=ExtResource("4_lynfv")]
+visible = false

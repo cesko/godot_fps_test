@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://dvg67klut70jb"]
+
+[ext_resource type="Script" path="res://src/trigger/trigger.gd" id="1_vb76s"]
+
+[node name="Trigger" type="Node3D"]
+script = ExtResource("1_vb76s")

@@ -1,0 +1,50 @@
+[gd_scene load_steps=4 format=3 uid="uid://dvqoemsf8amo4"]
+
+[ext_resource type="Script" path="res://src/hud/notification.gd" id="1_fbttd"]
+[ext_resource type="Script" path="res://src/hud/notification_options.gd" id="2_bqgr8"]
+
+[sub_resource type="Resource" id="Resource_1mqq6"]
+script = ExtResource("2_bqgr8")
+lifespan = 3.0
+out_anim = 1
+out_duration = 1.0
+
+[node name="hud_large_notification" type="Control" node_paths=PackedStringArray("label")]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+script = ExtResource("1_fbttd")
+label = NodePath("CenterContainer/MarginContainer/Label")
+default_notification_options = SubResource("Resource_1mqq6")
+
+[node name="CenterContainer" type="CenterContainer" parent="."]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -20.0
+offset_top = -20.0
+offset_right = 20.0
+offset_bottom = 20.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="CenterContainer"]
+layout_mode = 2
+theme_override_constants/margin_bottom = 200
+
+[node name="Label" type="Label" parent="CenterContainer/MarginContainer"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.941176, 0.509804, 0.180392, 1)
+theme_override_colors/font_shadow_color = Color(0.505882, 0, 0, 1)
+theme_override_colors/font_outline_color = Color(0.533333, 0, 0, 1)
+theme_override_font_sizes/font_size = 32
+text = "Large Notification"
+horizontal_alignment = 1
+vertical_alignment = 1

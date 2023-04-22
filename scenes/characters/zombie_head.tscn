@@ -1,0 +1,73 @@
+[gd_scene load_steps=12 format=3 uid="uid://dyp5q0yfpunkb"]
+
+[ext_resource type="Script" path="res://src/characters/zombie_head.gd" id="1_ifawx"]
+[ext_resource type="Script" path="res://src/characters/hitbox.gd" id="4_rwmlu"]
+[ext_resource type="Script" path="res://scenes/characters/zombie_state_machine/head_attacking.gd" id="5_3bvj0"]
+[ext_resource type="Script" path="res://src/utils/state_machine.gd" id="5_4vumj"]
+[ext_resource type="Script" path="res://scenes/characters/zombie_state_machine/head_moving.gd" id="5_a7beo"]
+[ext_resource type="Script" path="res://scenes/characters/zombie_state_machine/head_dying.gd" id="6_byk1g"]
+[ext_resource type="Script" path="res://src/utils/audio_stream_pool.gd" id="10_t1jom"]
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_d3asf"]
+radius = 0.2
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_gfxlp"]
+albedo_color = Color(0.392157, 0.588235, 0.196078, 1)
+
+[sub_resource type="SphereMesh" id="SphereMesh_mflfg"]
+material = SubResource("StandardMaterial3D_gfxlp")
+radius = 0.2
+height = 0.4
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_ljs3k"]
+radius = 0.218252
+
+[node name="ZombieHead" type="CharacterBody3D" groups=["Zombies"]]
+collision_layer = 32
+collision_mask = 33
+floor_snap_length = 0.21
+script = ExtResource("1_ifawx")
+attack_damage = 0.5
+base_color = Color(0.643137, 0.498039, 0.192157, 1)
+health = 1.0
+health_max = 1.0
+
+[node name="NavigationAgent3D" type="NavigationAgent3D" parent="."]
+navigation_layers = 3
+avoidance_enabled = true
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.2, 0)
+shape = SubResource("SphereShape3D_d3asf")
+
+[node name="ZombieStateMachine" type="Node" parent="."]
+script = ExtResource("5_4vumj")
+initial_state = NodePath("Moving")
+
+[node name="Moving" type="Node" parent="ZombieStateMachine"]
+script = ExtResource("5_a7beo")
+
+[node name="Attacking" type="Node" parent="ZombieStateMachine"]
+script = ExtResource("5_3bvj0")
+
+[node name="Dying" type="Node" parent="ZombieStateMachine"]
+script = ExtResource("6_byk1g")
+
+[node name="AudioStreamPool" type="Node3D" parent="."]
+script = ExtResource("10_t1jom")
+pool_size = 1
+
+[node name="HeadMesh" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.2, 0)
+layers = 4
+mesh = SubResource("SphereMesh_mflfg")
+skeleton = NodePath("")
+
+[node name="HeadHitbox" type="StaticBody3D" parent="HeadMesh"]
+collision_layer = 128
+collision_mask = 0
+script = ExtResource("4_rwmlu")
+damage_multiplier = 10.0
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="HeadMesh/HeadHitbox"]
+shape = SubResource("SphereShape3D_ljs3k")

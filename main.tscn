@@ -1,0 +1,68 @@
+[gd_scene load_steps=11 format=3 uid="uid://c15ub8kdcipgt"]
+
+[ext_resource type="Script" path="res://src/main.gd" id="1_3oqei"]
+[ext_resource type="PackedScene" uid="uid://1pi66kn11gia" path="res://scenes/misc/cartesian_frame.tscn" id="2_duo0o"]
+[ext_resource type="PackedScene" uid="uid://c83poiab747ru" path="res://scenes/worlds/yard.tscn" id="2_wqhw1"]
+[ext_resource type="Script" path="res://src/game/wave.gd" id="3_r2bbh"]
+
+[sub_resource type="Resource" id="Resource_onq77"]
+script = ExtResource("3_r2bbh")
+total_number_of_zombies = 3
+initial_number_of_zombies = 1
+probability_normal_zombie = 0.0
+probability_fast_zombie = 0.0
+probability_lightheaded_zombie = 1.0
+
+[sub_resource type="Resource" id="Resource_lwy7w"]
+script = ExtResource("3_r2bbh")
+total_number_of_zombies = 10
+initial_number_of_zombies = 3
+probability_normal_zombie = 1.0
+probability_fast_zombie = 0.2
+probability_lightheaded_zombie = 0.0
+
+[sub_resource type="Resource" id="Resource_otlvx"]
+script = ExtResource("3_r2bbh")
+total_number_of_zombies = 20
+initial_number_of_zombies = 5
+probability_normal_zombie = 1.0
+probability_fast_zombie = 0.1
+probability_lightheaded_zombie = 0.2
+
+[sub_resource type="Resource" id="Resource_ewmh7"]
+script = ExtResource("3_r2bbh")
+total_number_of_zombies = 20
+initial_number_of_zombies = 10
+probability_normal_zombie = 1.0
+probability_fast_zombie = 0.3
+probability_lightheaded_zombie = 0.3
+
+[sub_resource type="Resource" id="Resource_pavyx"]
+script = ExtResource("3_r2bbh")
+total_number_of_zombies = 40
+initial_number_of_zombies = 20
+probability_normal_zombie = 1.0
+probability_fast_zombie = 0.7
+probability_lightheaded_zombie = 0.5
+
+[sub_resource type="Resource" id="Resource_2wqny"]
+script = ExtResource("3_r2bbh")
+total_number_of_zombies = 35
+initial_number_of_zombies = 35
+probability_normal_zombie = 0.5
+probability_fast_zombie = 0.5
+probability_lightheaded_zombie = 0.5
+
+[node name="Main" type="Node"]
+script = ExtResource("1_3oqei")
+zombie_map = ExtResource("2_wqhw1")
+waves = Array[ExtResource("3_r2bbh")]([SubResource("Resource_onq77"), SubResource("Resource_lwy7w"), SubResource("Resource_otlvx"), SubResource("Resource_ewmh7"), SubResource("Resource_pavyx"), SubResource("Resource_2wqny")])
+
+[node name="World" type="Node" parent="."]
+
+[node name="CartesianFrame" parent="World" instance=ExtResource("2_duo0o")]
+visible = false
+
+[node name="HUD" type="Node" parent="."]
+
+[node name="UI" type="Node" parent="."]

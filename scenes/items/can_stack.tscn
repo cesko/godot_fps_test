@@ -1,0 +1,37 @@
+[gd_scene load_steps=2 format=3 uid="uid://bb0pudm4xejc0"]
+
+[ext_resource type="PackedScene" uid="uid://c7f8n7d61deyj" path="res://scenes/items/can.tscn" id="1_o0mvd"]
+
+[node name="CanStack" type="Node3D"]
+
+[node name="Can" parent="." instance=ExtResource("1_o0mvd")]
+
+[node name="Can2" parent="." instance=ExtResource("1_o0mvd")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.075, 0, 0.125)
+
+[node name="Can3" parent="." instance=ExtResource("1_o0mvd")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.075, 0, 0.125)
+
+[node name="Can4" parent="." instance=ExtResource("1_o0mvd")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.15, 0, 0)
+
+[node name="Can5" parent="." instance=ExtResource("1_o0mvd")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.15, 0, 0)
+
+[node name="Can6" parent="." instance=ExtResource("1_o0mvd")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.075, 0, -0.125)
+
+[node name="Can7" parent="." instance=ExtResource("1_o0mvd")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.075, 0, -0.125)
+
+[node name="Can8" parent="." instance=ExtResource("1_o0mvd")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0692505, 0.15, -0.0479896)
+
+[node name="Can9" parent="." instance=ExtResource("1_o0mvd")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.000951216, 0.15, 0.0746554)
+
+[node name="Can10" parent="." instance=ExtResource("1_o0mvd")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.3, 0)
+
+[node name="Can11" parent="." instance=ExtResource("1_o0mvd")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0738121, 0.15, -0.0458412)

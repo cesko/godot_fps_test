@@ -1,0 +1,157 @@
+[gd_scene load_steps=2 format=3 uid="uid://f4y6n7i8omb5"]
+
+[ext_resource type="Script" path="res://src/ui/menu_content.gd" id="1_kbiwp"]
+
+[node name="Menu" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_kbiwp")
+
+[node name="Main" type="Control" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Main"]
+custom_minimum_size = Vector2(300, 0)
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -150.0
+offset_top = -35.0
+offset_right = 150.0
+offset_bottom = 35.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="BtnStart" type="Button" parent="Main/VBoxContainer"]
+layout_mode = 2
+text = "Start Game"
+
+[node name="BtnLoad" type="Button" parent="Main/VBoxContainer"]
+visible = false
+layout_mode = 2
+text = "Load"
+
+[node name="BtnSettings" type="Button" parent="Main/VBoxContainer"]
+visible = false
+layout_mode = 2
+text = "Settings"
+
+[node name="BtnQuit" type="Button" parent="Main/VBoxContainer"]
+layout_mode = 2
+text = "Quit
+"
+
+[node name="GameSelection" type="Control" parent="."]
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="GameSelection"]
+custom_minimum_size = Vector2(300, 0)
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -72.5
+offset_top = -15.5
+offset_right = 72.5
+offset_bottom = 15.5
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="BtnZombieSurvival" type="Button" parent="GameSelection/VBoxContainer"]
+layout_mode = 2
+text = "Zombie Survival"
+
+[node name="BtnTesting" type="Button" parent="GameSelection/VBoxContainer"]
+layout_mode = 2
+text = "Test Environment"
+
+[node name="BtnBack" type="Button" parent="GameSelection"]
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 2
+offset_left = 1052.0
+offset_top = 617.0
+offset_right = 1152.0
+offset_bottom = 648.0
+text = "Back"
+
+[node name="InGame" type="Control" parent="."]
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="InGame"]
+custom_minimum_size = Vector2(300, 0)
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -150.0
+offset_top = -35.0
+offset_right = 150.0
+offset_bottom = 35.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="BtnContinue" type="Button" parent="InGame/VBoxContainer"]
+layout_mode = 2
+text = "Continue"
+
+[node name="BtnSave" type="Button" parent="InGame/VBoxContainer"]
+visible = false
+layout_mode = 2
+text = "Save"
+
+[node name="BtnLoad" type="Button" parent="InGame/VBoxContainer"]
+visible = false
+layout_mode = 2
+text = "Load"
+
+[node name="BtnSettings" type="Button" parent="InGame/VBoxContainer"]
+visible = false
+layout_mode = 2
+text = "Settings"
+
+[node name="BtnExitGame" type="Button" parent="InGame/VBoxContainer"]
+layout_mode = 2
+text = "Return to Main Menu
+"
+
+[node name="BtnQuit" type="Button" parent="InGame/VBoxContainer"]
+layout_mode = 2
+text = "Quit
+"
+
+[connection signal="button_up" from="Main/VBoxContainer/BtnStart" to="." method="_on_main_btn_start_button_up"]
+[connection signal="button_up" from="Main/VBoxContainer/BtnQuit" to="." method="_on_main_btn_quit_button_up"]
+[connection signal="button_up" from="GameSelection/VBoxContainer/BtnZombieSurvival" to="." method="_on_game_selection_btn_zombie_survival_button_up"]
+[connection signal="button_up" from="GameSelection/VBoxContainer/BtnTesting" to="." method="_on_game_selection_btn_testing_button_up"]
+[connection signal="button_up" from="GameSelection/BtnBack" to="." method="_on_game_selection_btn_back_button_up"]
+[connection signal="button_up" from="InGame/VBoxContainer/BtnContinue" to="." method="_on_ingame_btn_continue_button_up"]
+[connection signal="button_up" from="InGame/VBoxContainer/BtnExitGame" to="." method="_on_ingame_btn_exit_game_button_up"]
+[connection signal="button_up" from="InGame/VBoxContainer/BtnQuit" to="." method="_on_ingame_btn_quit_button_up"]

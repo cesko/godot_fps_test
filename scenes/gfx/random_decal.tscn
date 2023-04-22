@@ -1,0 +1,9 @@
+[gd_scene load_steps=4 format=3 uid="uid://d0xkjrs2tla30"]
+
+[ext_resource type="Script" path="res://src/gfx/random_decal.gd" id="1_4ktvq"]
+[ext_resource type="Texture2D" uid="uid://ea7dnm0hbjpr" path="res://addons/kenney_particle_pack/dirt_03.png" id="2_puyb3"]
+[ext_resource type="Texture2D" uid="uid://da0udapvnn3tf" path="res://addons/kenney_particle_pack/dirt_01.png" id="3_swgvc"]
+
+[node name="RandomDecal" type="Node3D"]
+script = ExtResource("1_4ktvq")
+textures = Array[Texture]([ExtResource("2_puyb3"), ExtResource("3_swgvc")])

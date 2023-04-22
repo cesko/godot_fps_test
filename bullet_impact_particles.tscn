@@ -1,6 +1,0 @@
-[gd_scene load_steps=2 format=3 uid="uid://dxby4s2rryx60"]
-
-[ext_resource type="Script" path="res://BulletImpactParticles.gd" id="1_0bo53"]
-
-[node name="BulletImpactParticles" type="Node"]
-script = ExtResource("1_0bo53")

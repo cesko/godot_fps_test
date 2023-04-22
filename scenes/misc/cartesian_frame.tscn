@@ -1,0 +1,61 @@
+[gd_scene load_steps=9 format=3 uid="uid://1pi66kn11gia"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ii8ij"]
+albedo_color = Color(1, 0, 0, 1)
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_kcn1c"]
+material = SubResource("StandardMaterial3D_ii8ij")
+top_radius = 0.05
+bottom_radius = 0.05
+height = 1.0
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_b7c4i"]
+albedo_color = Color(0, 1, 0, 1)
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_cw4oc"]
+material = SubResource("StandardMaterial3D_b7c4i")
+top_radius = 0.05
+bottom_radius = 0.05
+height = 1.0
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_nvima"]
+albedo_color = Color(0, 0, 1, 1)
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_lxlwf"]
+material = SubResource("StandardMaterial3D_nvima")
+top_radius = 0.05
+bottom_radius = 0.05
+height = 1.0
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_k7mqs"]
+albedo_color = Color(0, 0, 0, 1)
+
+[sub_resource type="SphereMesh" id="SphereMesh_ilihb"]
+material = SubResource("StandardMaterial3D_k7mqs")
+radius = 0.075
+height = 0.15
+
+[node name="CartesianFrame" type="Node3D"]
+
+[node name="X" type="MeshInstance3D" parent="."]
+transform = Transform3D(-4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0, 1, 0.5, 0, 0)
+layers = 524288
+cast_shadow = 0
+mesh = SubResource("CylinderMesh_kcn1c")
+
+[node name="Y" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0)
+layers = 524288
+cast_shadow = 0
+mesh = SubResource("CylinderMesh_cw4oc")
+
+[node name="Z" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0.5)
+layers = 524288
+cast_shadow = 0
+mesh = SubResource("CylinderMesh_lxlwf")
+
+[node name="Origin" type="MeshInstance3D" parent="."]
+layers = 524288
+cast_shadow = 0
+mesh = SubResource("SphereMesh_ilihb")

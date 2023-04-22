@@ -1,0 +1,150 @@
+[gd_scene load_steps=16 format=3 uid="uid://b6b30bqyrbajj"]
+
+[ext_resource type="Script" path="res://src/trigger/trigger.gd" id="1_bt0g8"]
+[ext_resource type="Script" path="res://src/trigger/trigger_event_pickup_ammunition.gd" id="2_gvme0"]
+[ext_resource type="Material" uid="uid://da1j3t0ngkshw" path="res://assets/materials/gold.tres" id="3_s0oay"]
+[ext_resource type="Script" path="res://src/utils/audio_stream_pool.gd" id="4_hcm4e"]
+
+[sub_resource type="Resource" id="Resource_mr6c0"]
+script = ExtResource("2_gvme0")
+type = 1
+amount = 14
+
+[sub_resource type="Resource" id="Resource_hxm47"]
+script = ExtResource("2_gvme0")
+type = 2
+amount = 15
+
+[sub_resource type="Resource" id="Resource_0gjmu"]
+script = ExtResource("2_gvme0")
+type = 3
+amount = 12
+
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_ysgy2"]
+height = 1.0
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_8teu5"]
+albedo_color = Color(0.435294, 0.435294, 0.435294, 1)
+roughness = 0.43
+
+[sub_resource type="SphereMesh" id="SphereMesh_jkbn7"]
+material = SubResource("StandardMaterial3D_8teu5")
+radius = 0.1
+height = 0.3
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_22gf8"]
+material = ExtResource("3_s0oay")
+top_radius = 0.1
+bottom_radius = 0.1
+height = 0.4
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_ucmv4"]
+material = ExtResource("3_s0oay")
+top_radius = 0.11
+bottom_radius = 0.11
+height = 0.02
+
+[sub_resource type="Animation" id="Animation_lfdxm"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Visual:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(0, 1, 0)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Visual:rotation")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(0, 0, 0)]
+}
+
+[sub_resource type="Animation" id="Animation_tif0f"]
+resource_name = "floating"
+length = 2.0
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Visual:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0.5, 1.5),
+"transitions": PackedFloat32Array(-2, -2),
+"update": 0,
+"values": [Vector3(0, 0.9, 0), Vector3(0, 1.1, 0)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Visual:rotation")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 2),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector3(0, 0, 0), Vector3(0, 6.28319, 0)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_vcytc"]
+_data = {
+"RESET": SubResource("Animation_lfdxm"),
+"floating": SubResource("Animation_tif0f")
+}
+
+[node name="InstantAmmu" type="Node3D"]
+script = ExtResource("1_bt0g8")
+events = Array[Resource("res://src/trigger/trigger_event.gd")]([SubResource("Resource_mr6c0"), SubResource("Resource_hxm47"), SubResource("Resource_0gjmu")])
+single_event = false
+event_delay_sec = 0.5
+
+[node name="Area3D" type="Area3D" parent="."]
+collision_layer = 33
+collision_mask = 33
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Area3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0)
+shape = SubResource("CylinderShape3D_ysgy2")
+
+[node name="Visual" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+
+[node name="Node3D" type="Node3D" parent="Visual"]
+transform = Transform3D(1, 0, 0, 0, 0.965926, -0.258819, 0, 0.258819, 0.965926, 0, 0, 0)
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Visual/Node3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.2, 0)
+mesh = SubResource("SphereMesh_jkbn7")
+skeleton = NodePath("../..")
+
+[node name="MeshInstance3D2" type="MeshInstance3D" parent="Visual/Node3D"]
+mesh = SubResource("CylinderMesh_22gf8")
+skeleton = NodePath("../..")
+
+[node name="MeshInstance3D3" type="MeshInstance3D" parent="Visual/Node3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.2, 0)
+mesh = SubResource("CylinderMesh_ucmv4")
+skeleton = NodePath("../..")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+autoplay = "floating"
+libraries = {
+"": SubResource("AnimationLibrary_vcytc")
+}
+
+[node name="AudioStreamPool" type="Node3D" parent="."]
+script = ExtResource("4_hcm4e")

@@ -1,0 +1,15 @@
+[gd_scene load_steps=3 format=3 uid="uid://csv2pyji5vtqu"]
+
+[ext_resource type="Texture2D" uid="uid://doyfjhfyhm8ni" path="res://assets/textures/bullet_hole.png" id="1_vwlhb"]
+[ext_resource type="PackedScene" uid="uid://1pi66kn11gia" path="res://scenes/misc/cartesian_frame.tscn" id="2_6nm2n"]
+
+[node name="DecalBulletHole" type="Decal"]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0)
+size = Vector3(0.1, 0.1, 0.1)
+texture_albedo = ExtResource("1_vwlhb")
+modulate = Color(0.964706, 0, 0.27451, 1)
+cull_mask = 425847
+
+[node name="CartesianFrame" parent="." instance=ExtResource("2_6nm2n")]
+transform = Transform3D(0.1, 0, 0, 0, 0.1, 0, 0, 0, 0.1, 0, 0, 0)
+visible = false

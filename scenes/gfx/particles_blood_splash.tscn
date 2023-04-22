@@ -1,0 +1,62 @@
+[gd_scene load_steps=11 format=3 uid="uid://bdkbcesjuwipw"]
+
+[ext_resource type="Texture2D" uid="uid://cewc4jov4lu2k" path="res://addons/kenney_particle_pack/circle_05.png" id="1_p5g8l"]
+[ext_resource type="Script" path="res://src/gfx/particles_impact.gd" id="2_1kv58"]
+[ext_resource type="PackedScene" uid="uid://1pi66kn11gia" path="res://scenes/misc/cartesian_frame.tscn" id="3_ku0ql"]
+
+[sub_resource type="Gradient" id="Gradient_122f5"]
+offsets = PackedFloat32Array(0.859155, 1)
+colors = PackedColorArray(1, 1, 1, 1, 1, 1, 1, 0)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_4wsv8"]
+gradient = SubResource("Gradient_122f5")
+
+[sub_resource type="Curve" id="Curve_arc7t"]
+_data = [Vector2(0, 0), 0.0, 3.56253, 0, 0, Vector2(0.635246, 1), 0.0, 0.0, 0, 0, Vector2(1, 1), 0.0, 0.0, 0, 0]
+point_count = 3
+
+[sub_resource type="CurveTexture" id="CurveTexture_2ui16"]
+curve = SubResource("Curve_arc7t")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_ce7ib"]
+lifetime_randomness = 0.5
+direction = Vector3(0, 0, -1)
+spread = 30.0
+gravity = Vector3(0, -10, 0)
+initial_velocity_min = 3.0
+initial_velocity_max = 6.0
+damping_min = 1.0
+damping_max = 1.0
+scale_max = 5.0
+scale_curve = SubResource("CurveTexture_2ui16")
+color_ramp = SubResource("GradientTexture1D_4wsv8")
+collision_mode = 2
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_tj31p"]
+transparency = 1
+vertex_color_use_as_albedo = true
+albedo_color = Color(0.713726, 0.105882, 0, 1)
+albedo_texture = ExtResource("1_p5g8l")
+
+[sub_resource type="QuadMesh" id="QuadMesh_4h38m"]
+material = SubResource("StandardMaterial3D_tj31p")
+size = Vector2(0.1, 0.1)
+
+[node name="ParticlesBloodSplash" type="GPUParticles3D"]
+transform = Transform3D(0.986544, 0, 0, 0, 0.986544, 0, 0, 0, 0.986544, 0, 0, 0)
+cast_shadow = 0
+amount = 20
+one_shot = true
+explosiveness = 0.8
+randomness = 1.0
+transform_align = 3
+process_material = SubResource("ParticleProcessMaterial_ce7ib")
+draw_passes = 2
+draw_pass_1 = SubResource("QuadMesh_4h38m")
+draw_pass_2 = null
+script = ExtResource("2_1kv58")
+color = Color(0.713726, 0.105882, 0, 1)
+
+[node name="CartesianFrame" parent="." instance=ExtResource("3_ku0ql")]
+transform = Transform3D(0.2, 0, 0, 0, 0.2, 0, 0, 0, 0.2, 0, 0, 0)
+visible = false

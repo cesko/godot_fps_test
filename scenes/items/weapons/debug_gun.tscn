@@ -1,0 +1,26 @@
+[gd_scene load_steps=7 format=3 uid="uid://cc3umxwr4juqh"]
+
+[ext_resource type="Script" path="res://src/items/debug_gun.gd" id="1_gne2u"]
+[ext_resource type="Script" path="res://src/misc/visual_vector_3d.gd" id="2_fu22b"]
+[ext_resource type="Material" uid="uid://cbl18e23k3cf3" path="res://assets/materials/blue.tres" id="3_l6iju"]
+[ext_resource type="Material" uid="uid://fhy0juqk3i15" path="res://assets/materials/white.tres" id="4_gox55"]
+[ext_resource type="Material" uid="uid://du78nrjjugkqw" path="res://assets/materials/black.tres" id="5_x50vh"]
+[ext_resource type="Material" uid="uid://dlq6dfcea7dil" path="res://assets/materials/red.tres" id="6_h3q2j"]
+
+[node name="DebugGun" type="Node3D" groups=["weapons"]]
+script = ExtResource("1_gne2u")
+shoot_time_msec = 10
+
+[node name="HitEffects" type="Node" parent="."]
+
+[node name="NormalVector" type="Node3D" parent="HitEffects"]
+script = ExtResource("2_fu22b")
+material = ExtResource("3_l6iju")
+from_point_material = ExtResource("4_gox55")
+to_point_material = ExtResource("5_x50vh")
+
+[node name="DicrectionVector" type="Node3D" parent="HitEffects"]
+script = ExtResource("2_fu22b")
+material = ExtResource("6_h3q2j")
+from_point_material = ExtResource("4_gox55")
+to_point_material = ExtResource("5_x50vh")

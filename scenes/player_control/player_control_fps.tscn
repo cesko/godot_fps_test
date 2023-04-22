@@ -1,0 +1,220 @@
+[gd_scene load_steps=20 format=3 uid="uid://tq8rsahgfa1m"]
+
+[ext_resource type="Script" path="res://scenes/player_control/player_control_fps.gd" id="1_luey8"]
+[ext_resource type="Script" path="res://src/utils/attribute.gd" id="2_8200q"]
+[ext_resource type="Script" path="res://src/utils/ammunition.gd" id="2_h45jv"]
+[ext_resource type="Script" path="res://src/utils/character_attributes.gd" id="2_i6aag"]
+[ext_resource type="PackedScene" uid="uid://bq2n14c8lujou" path="res://scenes/items/weapons/pistol.tscn" id="2_ku3gn"]
+[ext_resource type="PackedScene" uid="uid://q24afikip7mk" path="res://scenes/items/weapons/rifle.tscn" id="3_mdciq"]
+[ext_resource type="PackedScene" uid="uid://cc3umxwr4juqh" path="res://scenes/items/weapons/debug_gun.tscn" id="4_1b3c8"]
+[ext_resource type="Script" path="res://src/utils/audio_stream_pool.gd" id="4_2t4x1"]
+[ext_resource type="PackedScene" uid="uid://sq8e7fclptg0" path="res://scenes/items/weapons/shotgun.tscn" id="8_hrexx"]
+
+[sub_resource type="Resource" id="Resource_yftk4"]
+script = ExtResource("2_h45jv")
+pistol_bullets = 28
+pistol_bullets_max = 70
+assault_bullets = 0
+assault_bullets_max = 60
+shotgun_shells = 16
+shotgun_shells_max = 52
+
+[sub_resource type="Resource" id="Resource_uk3i1"]
+script = ExtResource("2_8200q")
+current = 10.0
+maximum = 10.0
+
+[sub_resource type="Resource" id="Resource_76bfs"]
+script = ExtResource("2_i6aag")
+health = SubResource("Resource_uk3i1")
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_3jr61"]
+
+[sub_resource type="Animation" id="Animation_hx4cg"]
+resource_name = "Dying"
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Camera3D:fov")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 1),
+"transitions": PackedFloat32Array(2, 1),
+"update": 0,
+"values": [60.0, 120.0]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Camera3D:position")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 1),
+"transitions": PackedFloat32Array(2, 1),
+"update": 0,
+"values": [Vector3(0, 1.7, 0), Vector3(0, 1.22127, 0)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("Camera3D:rotation")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0, 1),
+"transitions": PackedFloat32Array(2, 1),
+"update": 0,
+"values": [Vector3(0, 0, 0), Vector3(0.395596, -3.89844e-09, -0.571822)]
+}
+
+[sub_resource type="Animation" id="Animation_a0grx"]
+resource_name = "Idle"
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Camera3D:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(0, 1.7, 0)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Camera3D:rotation")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(0, 0, 0)]
+}
+
+[sub_resource type="Animation" id="Animation_x26kj"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Camera3D:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(0, 1.7, 0)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Camera3D:rotation")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(0, 0, 0)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("Camera3D:fov")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [60.0]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_ja382"]
+_data = {
+"Dying": SubResource("Animation_hx4cg"),
+"Idle": SubResource("Animation_a0grx"),
+"RESET": SubResource("Animation_x26kj")
+}
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_yj3xk"]
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_ktyal"]
+material = SubResource("StandardMaterial3D_yj3xk")
+
+[node name="PlayerControlFps" type="CharacterBody3D" node_paths=PackedStringArray("pistol", "rifle", "shotgun", "debug_gun")]
+collision_layer = 32
+collision_mask = 255
+platform_floor_layers = 4294967165
+script = ExtResource("1_luey8")
+speed = 4.0
+ammunition = SubResource("Resource_yftk4")
+pistol = NodePath("Camera3D/Pistol")
+has_pistol = true
+rifle = NodePath("Camera3D/Rifle")
+has_rifle = true
+shotgun = NodePath("Camera3D/Shotgun")
+debug_gun = NodePath("Camera3D/DebugGun")
+attributes = SubResource("Resource_76bfs")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+shape = SubResource("CapsuleShape3D_3jr61")
+
+[node name="Camera3D" type="Camera3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.7, 0)
+cull_mask = 950271
+fov = 60.0
+near = 0.04
+
+[node name="RayCast3D" type="RayCast3D" parent="Camera3D"]
+target_position = Vector3(0, 0, -50)
+collision_mask = 131
+
+[node name="Pistol" parent="Camera3D" node_paths=PackedStringArray("ray_cast", "audio_player") instance=ExtResource("2_ku3gn")]
+transform = Transform3D(-0.0248529, 0, 1.99985, 0, 2, 0, -1.99985, 0, -0.0248529, 0.596381, -0.378434, -0.683651)
+spread_increase_per_shot = 50.0
+ray_cast = NodePath("../RayCast3D")
+audio_player = NodePath("../../AudioStreamPool")
+
+[node name="Rifle" parent="Camera3D" node_paths=PackedStringArray("ray_cast", "audio_player") instance=ExtResource("3_mdciq")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.323528, -0.275937, -0.325071)
+visible = false
+spread = 10.0
+spread_max = 300.0
+ray_cast = NodePath("../RayCast3D")
+audio_player = NodePath("../../AudioStreamPool")
+
+[node name="DebugGun" parent="Camera3D" node_paths=PackedStringArray("ray_cast") instance=ExtResource("4_1b3c8")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.201971, 0)
+visible = false
+can_hit = false
+ray_cast = NodePath("../RayCast3D")
+
+[node name="Shotgun" parent="Camera3D" node_paths=PackedStringArray("ray_cast", "audio_player") instance=ExtResource("8_hrexx")]
+transform = Transform3D(-4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, 0.311509, -0.175797, -0.330441)
+visible = false
+ray_cast = NodePath("../RayCast3D")
+audio_player = NodePath("../../AudioStreamPool")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="Camera3D"]
+root_node = NodePath("../..")
+autoplay = "RESET"
+libraries = {
+"": SubResource("AnimationLibrary_ja382")
+}
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+mesh = SubResource("CapsuleMesh_ktyal")
+
+[node name="AudioStreamPool" type="Node3D" parent="."]
+script = ExtResource("4_2t4x1")
+pool_size = 5
+use_3d_audio = false

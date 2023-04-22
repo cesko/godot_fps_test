@@ -1,0 +1,77 @@
+[gd_scene load_steps=13 format=3 uid="uid://dajh43f6stmol"]
+
+[ext_resource type="Texture2D" uid="uid://cjgxgvgscfxik" path="res://assets/textures/kenney_splatpack/PNG/Double (512px)/splat20.png" id="1_es1me"]
+[ext_resource type="Script" path="res://src/gfx/particles_impact.gd" id="2_r0vad"]
+[ext_resource type="PackedScene" uid="uid://1pi66kn11gia" path="res://scenes/misc/cartesian_frame.tscn" id="3_nc1mo"]
+
+[sub_resource type="Curve" id="Curve_y00sh"]
+min_value = -360.0
+max_value = 360.0
+_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(1, 360), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="CurveTexture" id="CurveTexture_7g3w6"]
+curve = SubResource("Curve_y00sh")
+
+[sub_resource type="Gradient" id="Gradient_122f5"]
+offsets = PackedFloat32Array(0.71831, 1)
+colors = PackedColorArray(1, 1, 1, 1, 1, 1, 1, 0)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_4wsv8"]
+gradient = SubResource("Gradient_122f5")
+
+[sub_resource type="Curve" id="Curve_arc7t"]
+_data = [Vector2(0, 0), 0.0, 1.18447, 0, 1, Vector2(0.844262, 1), -0.0343019, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="CurveTexture" id="CurveTexture_2ui16"]
+curve = SubResource("Curve_arc7t")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_ce7ib"]
+lifetime_randomness = 0.5
+direction = Vector3(0, 0, -1)
+spread = 180.0
+gravity = Vector3(0, -5, 0)
+initial_velocity_min = 2.0
+initial_velocity_max = 5.0
+damping_min = 1.0
+damping_max = 1.0
+angle_min = -180.0
+angle_max = 180.0
+angle_curve = SubResource("CurveTexture_7g3w6")
+scale_min = 3.0
+scale_max = 5.0
+scale_curve = SubResource("CurveTexture_2ui16")
+color_ramp = SubResource("GradientTexture1D_4wsv8")
+collision_mode = 2
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_tj31p"]
+transparency = 1
+vertex_color_use_as_albedo = true
+albedo_color = Color(0.713726, 0.105882, 0, 1)
+albedo_texture = ExtResource("1_es1me")
+
+[sub_resource type="QuadMesh" id="QuadMesh_4h38m"]
+material = SubResource("StandardMaterial3D_tj31p")
+size = Vector2(0.2, 0.2)
+
+[node name="ParticlesBloodSplash02" type="GPUParticles3D"]
+transform = Transform3D(0.986544, 0, 0, 0, 0.986544, 0, 0, 0, 0.986544, 0, 0, 0)
+cast_shadow = 0
+emitting = false
+amount = 5
+lifetime = 0.4
+one_shot = true
+explosiveness = 0.8
+randomness = 1.0
+transform_align = 3
+process_material = SubResource("ParticleProcessMaterial_ce7ib")
+draw_passes = 2
+draw_pass_1 = SubResource("QuadMesh_4h38m")
+draw_pass_2 = null
+script = ExtResource("2_r0vad")
+color = Color(0.713726, 0.105882, 0, 1)
+
+[node name="CartesianFrame" parent="." instance=ExtResource("3_nc1mo")]
+transform = Transform3D(0.2, 0, 0, 0, 0.2, 0, 0, 0, 0.2, 0, 0, 0)
+visible = false

@@ -1,0 +1,26 @@
+[gd_scene load_steps=5 format=3 uid="uid://brlvh4pel372g"]
+
+[ext_resource type="Script" path="res://src/items/water_bomb.gd" id="1_3nw0m"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_dwkvj"]
+albedo_color = Color(0.572549, 0.2, 0.211765, 1)
+
+[sub_resource type="SphereMesh" id="SphereMesh_wci73"]
+material = SubResource("StandardMaterial3D_dwkvj")
+radius = 0.1
+height = 0.2
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_ucdyw"]
+radius = 0.1
+
+[node name="WaterBomb" type="RigidBody3D"]
+collision_layer = 2
+collision_mask = 32803
+mass = 0.1
+script = ExtResource("1_3nw0m")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+mesh = SubResource("SphereMesh_wci73")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+shape = SubResource("SphereShape3D_ucdyw")
