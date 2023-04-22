@@ -1,7 +1,10 @@
-[gd_scene load_steps=11 format=3 uid="uid://sq8e7fclptg0"]
+[gd_scene load_steps=14 format=3 uid="uid://sq8e7fclptg0"]
 
 [ext_resource type="Script" path="res://src/items/shotgun.gd" id="1_q8qyc"]
 [ext_resource type="PackedScene" uid="uid://cjoa63gjsi7cc" path="res://assets/models/weapons/shotgun.blend" id="2_ekd28"]
+[ext_resource type="AudioStream" uid="uid://dh2jsuoehk744" path="res://assets/audio/shotgun_shot.mp3" id="2_xwypa"]
+[ext_resource type="AudioStream" uid="uid://bps0eqrm4bnya" path="res://assets/audio/shotgun_reload.mp3" id="3_0qwl6"]
+[ext_resource type="AudioStream" uid="uid://cadl11ysjq0t" path="res://assets/audio/pistol_empty.mp3" id="4_kxlid"]
 
 [sub_resource type="Animation" id="Animation_gic85"]
 length = 0.001
@@ -218,13 +221,16 @@ ammunition_type = 3
 magazin_size = 6
 damage = 0.5
 current_magazin = 6
-reload_time_msec = 2000
+reload_time_msec = 3000
 shoot_time_msec = 500
 spread = 200.0
 spread_increase_per_shot = 200.0
 spread_max = 400.0
 spread_decrease_time_msec = 100.0
 animation_player = NodePath("AnimationPlayer")
+sfx_shoot = ExtResource("2_xwypa")
+sfx_reload = ExtResource("3_0qwl6")
+sfx_empty = ExtResource("4_kxlid")
 
 [node name="shotgun" parent="." instance=ExtResource("2_ekd28")]
 

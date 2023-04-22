@@ -13,7 +13,7 @@ var map
 # Game Info
 @export var zombie_map:PackedScene
 @export var waves : Array[Wave]
-@export var initial_wave:int = 0
+@export var initial_wave:int = 4
 
 var _current_wave = initial_wave - 1
 var _active_enemies = 0
