@@ -1,19 +1,26 @@
 extends CharacterBody3D
 
 signal killed
+signal environment_impact(Transform3D)
 
 @onready var camera = $Camera3D
 @onready var anim_player = $AnimationPlayer
 @onready var muzzle_flash = $Camera3D/pistol/MuzzleFlash
 @onready var aiming_raycast = $Camera3D/RayCast3D
+@onready var audio_pistol_shot = $AudioPistolShot
+@onready var audio_pistol_empty = $AudioPistolEmpty
+@onready var audio_pistol_reload = $AudioPistolReload
 
 const SPEED = 4.5
+const SPRINT_SPEED = 6
+const SPRINT_DURATION = 2.0
+const SPRINT_JUMP_VELOCITY = 3
 const JUMP_VELOCITY = 5
 const ATTACK_DMG = 1
 
 var _alive = true
-var _health_max:float = 5
-var _health:float = 5
+var health_max:float = 5
+var health:float = 5
 
 var _ammu_max:int = 70
 var _ammu_magsize:int = 7
@@ -37,7 +44,7 @@ func _unhandled_input(event):
 		camera.rotate_x(-event.relative.y * .005)
 		camera.rotation.x = clamp(camera.rotation.x, -PI/2, PI/2)
 	
-	if Input.is_action_just_pressed("shoot") and anim_player.current_animation != "shoot" and anim_player.current_animation != "reload":
+	if Input.is_action_just_pressed("shoot") and anim_player.current_animation != "shoot" and anim_player.current_animation != "reload" and not Input.is_action_pressed("sprint"):
 		play_shoot_effects()
 	
 	if Input.is_action_just_pressed("reload") and anim_player.current_animation != "shoot":
@@ -52,21 +59,27 @@ func _physics_process(delta):
 	# Add the gravity.
 	if not is_on_floor():
 		velocity.y -= gravity * delta
-
-	# Handle Jump.
+		
+	var speed = SPEED
+	var jump_speed = JUMP_VELOCITY
+	if Input.is_action_pressed("sprint"):
+		speed = SPRINT_SPEED
+		jump_speed = SPRINT_JUMP_VELOCITY
+	
+		# Handle Jump.
 	if Input.is_action_just_pressed("ui_accept") and is_on_floor():
-		velocity.y = JUMP_VELOCITY
+		velocity.y = jump_speed
 
 	# Get the input direction and handle the movement/deceleration.
 	# As good practice, you should replace UI actions with custom gameplay actions.
 	var input_dir = Input.get_vector("left", "right", "up", "down")
 	var direction = (transform.basis * Vector3(input_dir.x, 0, input_dir.y)).normalized()
 	if direction:
-		velocity.x = direction.x * SPEED
-		velocity.z = direction.z * SPEED
+		velocity.x = direction.x * speed
+		velocity.z = direction.z * speed
 	else:
-		velocity.x = move_toward(velocity.x, 0, SPEED)
-		velocity.z = move_toward(velocity.z, 0, SPEED)
+		velocity.x = move_toward(velocity.x, 0, speed)
+		velocity.z = move_toward(velocity.z, 0, speed)
 		
 	if anim_player.current_animation == "shoot" or  anim_player.current_animation == "reload":
 		pass
@@ -79,6 +92,7 @@ func _physics_process(delta):
 
 func play_shoot_effects():
 	if _ammu_gun == 0:
+		audio_pistol_empty.play()
 		return
 	_ammu_gun -= 1
 	if aiming_raycast.is_colliding() == false:
@@ -87,10 +101,23 @@ func play_shoot_effects():
 		var target = aiming_raycast.get_collider()
 		print ("hit " + target.get_parent().name + "/" + target.name + " (Class: " + target.get_class() + ")")
 		if target.has_method("hit"):
-			target.call("hit", ATTACK_DMG)
+			var hit_info = HitInfo.new()
+			hit_info.damage = ATTACK_DMG
+			hit_info.collision_point = aiming_raycast.get_collision_point()
+			hit_info.collision_normal = aiming_raycast.get_collision_normal() 
+			
+			var q = get_quaternion()
+			hit_info.collision_dir = aiming_raycast.target_position.rotated(q.get_axis().normalized(), q.get_angle())
+			target.call("hit", hit_info)
+		else:
+			var tf = aiming_raycast.global_transform
+			tf.origin = aiming_raycast.get_collision_point()
+			environment_impact.emit(tf)
+			
 	
 	anim_player.stop()
 	anim_player.play("shoot")
+	audio_pistol_shot.play()
 	muzzle_flash.restart()
 	muzzle_flash.emitting = true
 
@@ -105,9 +132,10 @@ func reload():
 		_ammu_reserve = ammu_total - _ammu_gun
 		anim_player.stop()
 		anim_player.play("reload")
+		audio_pistol_reload.play()
 	
-func get_health_percent() -> float:
-	return _health / _health_max
+func gethealth_percent() -> float:
+	return health / health_max
 	
 func get_ammu_gun() -> int:
 	return _ammu_gun
@@ -118,8 +146,8 @@ func get_ammu_reserve() -> int:
 func take_damage(damage:float):
 	if not _alive:
 		return
-	_health -= damage
-	if _health <= 0:
+	health -= damage
+	if health <= 0:
 		_alive = false
 		anim_player.stop()
 		anim_player.play("dying")

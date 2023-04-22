@@ -21,7 +21,7 @@ func _ready():
 func getPlayerSpawn():
 	return player_spawn.getSpawn()
 
-func getZombieSpawn(player_location:Vector3, safe_radius=3) -> Transform3D:
+func getZombieSpawn(player_location:Vector3, safe_radius=5) -> Transform3D:
 
 	for i in range(10):
 		var k = rng.randi_range(0, 10)

@@ -5,6 +5,11 @@ signal attack_player(damage:float)
 @onready var nav_agent = $NavigationAgent3D
 @onready var anim_player = $AnimationPlayer
 @onready var collision_shape = $CollisionShape3D
+@onready var audio_attack = $AudioAttack
+@onready var audio_spawn = $AudioSpawn
+@onready var ray_cast = $RayCast3D
+@onready var floor_ray_cast = $FloorRayCast
+# @onready var blood_effects = $BloodEffectsPool
 
 var SPEED = 3.0
 var ATTACK_RANGE = 1.5
@@ -32,7 +37,8 @@ func fsm_spawning_update():
 	pass
 
 func fsm_spawning_enter():
-	pass
+	print("spawn zombie")
+	audio_spawn.play()
 
 func fsm_spawning_transto_moving():
 	return anim_player.current_animation != 'Spawn'
@@ -47,7 +53,10 @@ func fsm_moving_update():
 	var look_at_position = current_location
 	look_at_position.x += new_velocity.x
 	look_at_position.z += new_velocity.z
-	look_at(look_at_position, Vector3.UP) #look in the direction of movement
+#	look_at_position = look_at_position.normalized()
+#	if not look_at_position.is_equal_approx(Vector3.UP):
+	if not look_at_position.is_equal_approx(global_transform.origin):
+		look_at(look_at_position, Vector3.UP) #look in the direction of movement
 
 	anim_player.play("Walk")
 
@@ -64,7 +73,7 @@ func fsm_attacking_update():
 	pass
 
 func fsm_attacking_enter():
-	velocity = Vector3.ZERO
+	# velocity = Vector3.ZERO
 	attack()
 
 func fsm_dying_update():
@@ -101,6 +110,8 @@ func _ready():
 	STATE_ATTACKING = fsm.newState()
 	STATE_DYING = fsm.newState()
 	STATE_TAKING_DAMAGE = fsm.newState()
+	
+	fsm.getState(STATE_SPAWNING).setEntryFunction(fsm_spawning_enter)
 	fsm.getState(STATE_MOVING).setUpdateFunction(fsm_moving_update)
 	fsm.getState(STATE_ATTACKING).setEntryFunction(fsm_attacking_enter)
 	fsm.getState(STATE_DYING).setEntryFunction(fsm_dying_enter)
@@ -120,6 +131,7 @@ func _process(delta):
 
 func _physics_process(delta):		
 	fsm.execute()
+	ray_cast.look_at(Globals.player.camera.global_position)
 	velocity.x = clamp(velocity.x, -1.5*SPEED, 1.5*SPEED)
 	velocity.y = clamp(velocity.y, -1.5*SPEED, 1.5*SPEED)
 	velocity.z = clamp(velocity.z, -1.5*SPEED, 1.5*SPEED)
@@ -132,16 +144,25 @@ func update_target_location(target_location):
 func attack():
 	anim_player.stop()
 	anim_player.play("Attack")
-	attack_player.emit(DAMAGE)
-	
+	audio_attack.play()
+	await get_tree().create_timer(0.1).timeout	
+	if nav_agent.distance_to_target() <= 1.1*ATTACK_RANGE:
+		attack_player.emit(DAMAGE)
 
-func take_damage(damage):
-	health -= damage
+func hit(hit_info:HitInfo):
+	take_damage(hit_info)
+
+func take_damage(hit_info:HitInfo):
+	health -= hit_info.damage
 	
 	# print("hit! health=" + str(health))
 	changeColor(base_color*health/health_max)
 	fsm.manualTransition(STATE_TAKING_DAMAGE)
 #	await anim_player.animation_finished 
+	var tf = get_global_transform()
+	tf.origin = hit_info.collision_point
+	EffectsServer.blood_effects.addBloodSplatter(tf)	
+
 
 func isAlive() -> bool:
 	return alive

@@ -12,6 +12,5 @@ func _ready():
 func _process(delta):
 	pass
 
-func hit(value):
-	print("hit the zombie")
-	zombie.call("take_damage", value * hit_multiplier)
+func hit(hit_info:HitInfo):
+	zombie.call("hit", hit_info)

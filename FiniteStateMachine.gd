@@ -9,7 +9,7 @@ var _manual_transition:bool = false
 
 const WILDCARD := -1
 
-var _transitioned = false
+var _transitioned = true
 
 func logprint(s:String):
 	# print(s)

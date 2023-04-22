@@ -1,10 +1,13 @@
-[gd_scene load_steps=20 format=3 uid="uid://bmh2hiplxhnsk"]
+[gd_scene load_steps=23 format=3 uid="uid://bmh2hiplxhnsk"]
 
 [ext_resource type="PackedScene" uid="uid://bouo7lojo32gq" path="res://level.tscn" id="1_32rnf"]
 [ext_resource type="Script" path="res://world.gd" id="1_mg5q4"]
 [ext_resource type="PackedScene" uid="uid://wsl020edt1a5" path="res://health_pickup.tscn" id="3_66wg8"]
 [ext_resource type="Script" path="res://UI.gd" id="3_fsty2"]
 [ext_resource type="PackedScene" uid="uid://db7iocwk5j3dn" path="res://ammu_pick_up.tscn" id="4_h433v"]
+[ext_resource type="PackedScene" uid="uid://8fa28char3or" path="res://bullet_holes.tscn" id="6_d1p5g"]
+[ext_resource type="Texture2D" uid="uid://c3n7c0v1q1xw1" path="res://addons/kenney_particle_pack/magic_03.png" id="6_i0m6s"]
+[ext_resource type="PackedScene" uid="uid://dxby4s2rryx60" path="res://bullet_impact_particles.tscn" id="7_4ooqy"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_wywy2"]
 sky_horizon_color = Color(0.64625, 0.65575, 0.67075, 1)
@@ -144,26 +147,27 @@ environment = SubResource("Environment_04wkn")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 9.44664, -9.15283, 4.92957)
 navigation_mesh = SubResource("NavigationMesh_bh1bf")
 
-[node name="level" parent="NavigationRegion3D" instance=ExtResource("1_32rnf")]
+[node name="environment" parent="NavigationRegion3D" instance=ExtResource("1_32rnf")]
 
-[node name="HealthPickUp" parent="NavigationRegion3D/level" instance=ExtResource("3_66wg8")]
+[node name="HealthPickUp" parent="NavigationRegion3D/environment" instance=ExtResource("3_66wg8")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -8.26221, 2.70059, -18.3596)
 pickup_radius = 2.0
 
-[node name="AmmuPickUp" parent="NavigationRegion3D/level" instance=ExtResource("4_h433v")]
+[node name="AmmuPickUp" parent="NavigationRegion3D/environment" instance=ExtResource("4_h433v")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7.21333, 2.41534, -18.6658)
 
-[node name="MeshInstance3D" type="MeshInstance3D" parent="NavigationRegion3D/level"]
+[node name="MeshInstance3D" type="MeshInstance3D" parent="NavigationRegion3D/environment"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 9.99417, 2.27179, -9.71176)
 visible = false
 mesh = SubResource("CylinderMesh_m8cmo")
 
-[node name="MeshInstance3D2" type="MeshInstance3D" parent="NavigationRegion3D/level"]
+[node name="MeshInstance3D2" type="MeshInstance3D" parent="NavigationRegion3D/environment"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -9.90574, 2.27179, -9.71176)
 visible = false
 mesh = SubResource("CylinderMesh_m8cmo")
 
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
+process_mode = 3
 
 [node name="MainMenu" type="PanelContainer" parent="CanvasLayer"]
 anchors_preset = 15
@@ -189,13 +193,17 @@ theme_override_constants/separation = 15
 
 [node name="Header" type="Label" parent="CanvasLayer/MainMenu/MarginContainer/VBoxContainer"]
 layout_mode = 2
-text = "Main Menu	"
+text = "Murdering Floor"
 horizontal_alignment = 1
 vertical_alignment = 1
 
 [node name="StartButton" type="Button" parent="CanvasLayer/MainMenu/MarginContainer/VBoxContainer"]
 layout_mode = 2
 text = "Start"
+
+[node name="TestButton" type="Button" parent="CanvasLayer/MainMenu/MarginContainer/VBoxContainer"]
+layout_mode = 2
+text = "Start Test"
 
 [node name="RichTextLabel" type="RichTextLabel" parent="CanvasLayer/MainMenu/MarginContainer/VBoxContainer"]
 layout_mode = 2
@@ -258,4 +266,46 @@ libraries = {
 "": SubResource("AnimationLibrary_kpjm6")
 }
 
+[node name="WaveStats" type="Label" parent="UI"]
+offset_left = 562.0
+offset_top = 16.0
+offset_right = 1142.0
+offset_bottom = 61.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_colors/font_shadow_color = Color(1, 1, 1, 1)
+theme_override_colors/font_outline_color = Color(1, 1, 1, 1)
+theme_override_fonts/font = SubResource("SystemFont_5u8px")
+theme_override_font_sizes/font_size = 30
+horizontal_alignment = 2
+
+[node name="CenterContainer" type="CenterContainer" parent="UI"]
+clip_contents = true
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -256.0
+offset_top = -256.0
+offset_right = 256.0
+offset_bottom = 256.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+
+[node name="TextureRect" type="TextureRect" parent="UI/CenterContainer"]
+custom_minimum_size = Vector2(50, 50)
+layout_mode = 2
+texture = ExtResource("6_i0m6s")
+expand_mode = 2
+
+[node name="BulletHoles" parent="." instance=ExtResource("6_d1p5g")]
+max_number_of_bullet_holes = 128
+
+[node name="BulletImpactParticles" parent="." instance=ExtResource("7_4ooqy")]
+
 [connection signal="pressed" from="CanvasLayer/MainMenu/MarginContainer/VBoxContainer/StartButton" to="." method="_on_start_button_pressed"]
+[connection signal="pressed" from="CanvasLayer/MainMenu/MarginContainer/VBoxContainer/TestButton" to="." method="_on_test_button_pressed"]
+
+[editable path="NavigationRegion3D/environment"]

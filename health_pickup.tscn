@@ -1,6 +1,7 @@
-[gd_scene load_steps=7 format=3 uid="uid://wsl020edt1a5"]
+[gd_scene load_steps=8 format=3 uid="uid://wsl020edt1a5"]
 
 [ext_resource type="Script" path="res://health_pickup.gd" id="1_54rih"]
+[ext_resource type="AudioStream" uid="uid://cc5ocgutwc1tp" path="res://audio/health_pickup.mp3" id="2_rwni8"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_0cgmm"]
 albedo_color = Color(0, 0.4, 0.0352941, 1)
@@ -73,6 +74,7 @@ _data = {
 
 [node name="HealthPickUp" type="Node3D"]
 script = ExtResource("1_54rih")
+pickup_radius = null
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="."]
 mesh = SubResource("BoxMesh_s73ft")
@@ -82,3 +84,6 @@ autoplay = "Float"
 libraries = {
 "": SubResource("AnimationLibrary_0bvhl")
 }
+
+[node name="AudioStreamPlayer3D" type="AudioStreamPlayer3D" parent="."]
+stream = ExtResource("2_rwni8")
