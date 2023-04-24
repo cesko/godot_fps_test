@@ -123,8 +123,8 @@ func shoot():
 			hit_info.hit_value = damage
 			
 			var target = ray_cast.get_collider()
-			if GameManager.hud.push_notification:
-				GameManager.hud.push_notification.print("hit " + str(target))
+			# if GameManager.hud.push_notification:
+				# GameManager.hud.push_notification.print("hit " + str(target))
 			if target.has_method("hit"):
 				target.hit(hit_info)
 			else:

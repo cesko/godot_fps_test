@@ -7,6 +7,7 @@ var weapon_info
 var crosshair
 var notification
 var push_notification
+var wave_counter
 
 func update_health(health:float, max:float):
 	if health_display:

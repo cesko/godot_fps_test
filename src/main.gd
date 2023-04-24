@@ -13,7 +13,7 @@ var map
 # Game Info
 @export var zombie_map:PackedScene
 @export var waves : Array[Wave]
-@export var initial_wave:int = 4
+@export var initial_wave:int = 0
 
 var _current_wave = initial_wave - 1
 var _active_enemies = 0
@@ -32,7 +32,7 @@ func _process(delta):
 
 func _unhandled_input(event):
 	if Input.is_action_just_pressed("ui_cancel"):
-		quit_game()
+		GameManager.toggle_pause() # this only works for pausing, not unpausing
 	
 	if Input.is_action_just_pressed("debug_cam"):
 		change_camera()
@@ -41,11 +41,14 @@ func load_main_menu():
 	var content = preload("res://scenes/ui/menu_content.tscn").instantiate()
 	content.start_game.connect(start_game)
 	content.quit.connect(quit_game)
+	content.continue_game.connect(GameManager.resume_game)
 	
 	var layout = preload("res://scenes/ui/menu_layout.tscn").instantiate()
 	ui.add_child(layout) 
 	layout.logo_texture = preload("res://assets/textures/murder_floor_logo.png")
 	layout.setContent(content)
+	
+	GameManager.menu = layout
 
 func load_hud():
 	var crosshair = preload("res://scenes/hud/hud_crosshair.tscn").instantiate()
@@ -53,11 +56,13 @@ func load_hud():
 	var hud_weapon_info = preload("res://scenes/hud/hud_weapon_info.tscn").instantiate()
 	var hud_notification = preload("res://scenes/hud/hud_large_notification.tscn").instantiate()
 	var hud_push_notification = preload("res://scenes/hud/push_notification.tscn").instantiate()
+	var wave_counter = preload("res://scenes/hud/hud_wave_counter.tscn").instantiate()
 	hud.add_child(crosshair)
 	hud.add_child(hud_health)
 	hud.add_child(hud_weapon_info)
 	hud.add_child(hud_notification)
 	hud.add_child(hud_push_notification)
+	hud.add_child(wave_counter)
 	
 	# set globals
 	GameManager.hud.health_display = hud_health
@@ -65,6 +70,7 @@ func load_hud():
 	GameManager.hud.crosshair = crosshair
 	GameManager.hud.notification = hud_notification
 	GameManager.hud.push_notification = hud_push_notification
+	GameManager.hud.wave_counter = wave_counter
 
 func hide_node_children(n:Node):
 	if n.has_method("hide"):
@@ -81,6 +87,8 @@ func start_game(gm:GameMode):
 		start_plane_world()
 	elif gm.mode == GameMode.Mode.ZOMBIES:
 		start_zombie_game(zombie_map)
+	GameManager.game_status = GameManager.GameStatus.RUNNING
+	
 	
 func start_zombie_game(map_scene:PackedScene):
 	Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
@@ -94,6 +102,7 @@ func start_zombie_game(map_scene:PackedScene):
 	player_fps.global_transform = GameManager.world.get_random_player_spawn()
 	player_fps.died.connect(_on_player_died)
 	active_player = player_fps
+	GameManager.player = player_fps
 	active_player.set_active(true)
 	
 	player_flying = preload("res://scenes/player_control/player_control_flying.tscn").instantiate()
@@ -102,11 +111,15 @@ func start_zombie_game(map_scene:PackedScene):
 	player_flying.global_position.y = 1
 	player_flying.set_active(false)
 	
-	get_tree().create_timer(3.0).timeout.connect(start_next_wave)
+	var weapons = get_tree().get_nodes_in_group("weapon")
+	for w in weapons:
+		w.spread_updated.connect(GameManager.hud.crosshair.setSpread)
+	
+	get_tree().create_timer(3.0, false).timeout.connect(start_next_wave)
 
 func start_resting_period( duration=10.0 ):
-	get_tree().create_timer(duration).timeout.connect(start_next_wave)	
-	get_tree().create_timer(duration - 3).timeout.connect( func(): GameManager.hud.notification.countdown(3) )
+	get_tree().create_timer(duration, false).timeout.connect(start_next_wave)	
+	get_tree().create_timer(duration - 3, false).timeout.connect( func(): GameManager.hud.notification.countdown(3) )
 	
 
 func start_next_wave():
@@ -120,8 +133,22 @@ func start_next_wave():
 	
 	for i in range(waves[_current_wave].initial_number_of_zombies):
 		spawn_zombie()
+		
+	get_tree().create_timer(5.0).timeout.connect(interval_spawn)
+	update_wave_info()
+		
+
+func interval_spawn():
+	if _wave_finished:
+		return
+	
+	if _active_enemies + _enemies_killed_in_wave < waves[_current_wave].total_number_of_zombies:
+		spawn_zombie()
+		var random_interval = randf_range(.7 * waves[_current_wave].nominal_spawn_interval_sec, 1.3 * waves[_current_wave].nominal_spawn_interval_sec)
+		get_tree().create_timer(random_interval, false).timeout.connect(interval_spawn)
 
 func process_wave():
+	update_wave_info()
 	if _wave_finished:
 		return
 	
@@ -136,7 +163,7 @@ func process_wave():
 			GameManager.hud.notification.notify("You survived! Well done")
 			game_won()
 	
-	elif _active_enemies < waves[_current_wave].initial_number_of_zombies:
+	elif _active_enemies < waves[_current_wave].minimum_number_of_zombies: # waves[_current_wave].initial_number_of_zombies:
 		if _active_enemies + _enemies_killed_in_wave < waves[_current_wave].total_number_of_zombies:
 			spawn_zombie()
 
@@ -152,9 +179,9 @@ func spawn_zombie_head(tf:Transform3D, initial_velocity:Vector3, color:Color):
 	
 	var zombie = zombie_head_scene.instantiate()
 	print("spawn zombie head at " + str(tf))
+	zombie.set_global_transform(tf)
 	zombie.change_color(color)
 	zombie.base_color = color
-	zombie.global_transform = tf
 	GameManager.world.add_child(zombie)
 	zombie.target = player_fps
 	zombie.died.connect(func(): _on_zombie_died(zombie))
@@ -187,16 +214,17 @@ func spawn_zombie():
 	else:
 		print("Error spawning zombie")
 			
-	GameManager.world.add_child(zombie)
 	var tf = GameManager.world.get_random_enemy_spawn(active_player.global_position, 3.0)
 	print("spawn zombie at " + str(tf))
 	zombie.global_transform = tf
 	zombie.target = player_fps
 	zombie.died.connect(func(): _on_zombie_died(zombie))
 	zombie.randomization()
+	GameManager.world.add_child(zombie)
 	_enemy_counter_mutex.lock()
 	_active_enemies += 1
 	_enemy_counter_mutex.unlock()
+	update_wave_info()
 
 func start_plane_world():
 	Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
@@ -249,7 +277,13 @@ func _on_zombie_died(char:Node):
 	_enemies_killed_in_wave += 1
 	_active_enemies -= 1
 	_enemy_counter_mutex.unlock()
+	update_wave_info()
 	GameManager.hud.push_notification.print("Enemies left: " + str(waves[_current_wave].total_number_of_zombies - _enemies_killed_in_wave) )
 	process_wave()
 	await get_tree().create_timer(1).timeout
 	char.queue_free()
+
+func update_wave_info():
+	if(GameManager.hud.wave_counter):
+		var remaining = waves[_current_wave].total_number_of_zombies - _enemies_killed_in_wave - _active_enemies
+		GameManager.hud.wave_counter.display_wave_info(_current_wave + 1, _active_enemies, remaining)

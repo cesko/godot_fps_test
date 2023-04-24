@@ -3,10 +3,10 @@ extends Node
 var bullet_holes = DecalPool.new(256, preload("res://scenes/gfx/decal_bullet_hole.tscn"))
 var impact_particles = ParticlePool.new(3, preload("res://scenes/gfx/particles_impact.tscn"))
 var blood_splash_particles = ParticlePool.new(3, preload("res://scenes/gfx/particles_blood_splash02.tscn"))
-var blood_splat_decals = DecalPool.new(512, preload("res://scenes/gfx/decal_blood_splat.tscn"))
+var blood_splat_decals = DecalPool.new(128, preload("res://scenes/gfx/decal_blood_splat.tscn"))
 func _ready():
 	add_child(bullet_holes)
-	add_child(impact_particles)
+	add_child(impact_particles)	
 	add_child(blood_splash_particles)
 	add_child(blood_splat_decals)
 

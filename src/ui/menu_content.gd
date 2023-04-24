@@ -8,26 +8,38 @@ signal quit
 @export var initial_panel:Control
 
 @onready var panels = {"Main":$Main, "GameSelection":$GameSelection, "InGame": $InGame }
+#@onready var default_focus = {"Main":$Main/VBoxContainer/BtnStart, "GameSelection":$GameSelection/VBoxContainer/BtnZombieSurvival, "InGame":$InGame/VBoxContainer/BtnContinue}
+@onready var default_focus = {$Main:$Main/VBoxContainer/BtnStart, $GameSelection:$GameSelection/VBoxContainer/BtnZombieSurvival, $InGame:$InGame/VBoxContainer/BtnContinue}
 
 var _current_panel
 
 func _ready():
-	if initial_panel:
-		_current_panel = initial_panel
-	else:
-		_current_panel = panels["Main"]
-	
 	hideAllPanels()
-	_current_panel.show()
+	if initial_panel:
+		switchToPanel(initial_panel)
+	else:
+		switchToPanel(panels["Main"])
 
 func hideAllPanels():
 	for p in panels:
 		panels[p].hide()
 
 func switchToPanel(panel:Control):
-	_current_panel.hide()
+	if _current_panel:
+		_current_panel.hide()
 	_current_panel = panel
 	_current_panel.show()
+	default_focus[panel].grab_focus()
+	
+	
+func switchToPanelNamed(panel:String):
+	if panel in panels:
+		switchToPanel(panels[panel])
+	else:
+		printerr("panel '" + panel + "' not found!")
+
+func showInGameMenu():
+	switchToPanel(panels["InGame"])
 
 # External Button Pushes
 func _on_main_btn_quit_button_up():

@@ -155,12 +155,12 @@ platform_floor_layers = 4294967165
 script = ExtResource("1_luey8")
 speed = 4.0
 ammunition = SubResource("Resource_yftk4")
-pistol = NodePath("Camera3D/Pistol")
+pistol = NodePath("Camera3D/Hand/Pistol")
 has_pistol = true
-rifle = NodePath("Camera3D/Rifle")
+rifle = NodePath("Camera3D/Hand/Rifle")
 has_rifle = true
-shotgun = NodePath("Camera3D/Shotgun")
-debug_gun = NodePath("Camera3D/DebugGun")
+shotgun = NodePath("Camera3D/Hand/Shotgun")
+debug_gun = NodePath("Camera3D/Hand/DebugGun")
 attributes = SubResource("Resource_76bfs")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
@@ -177,31 +177,30 @@ near = 0.04
 target_position = Vector3(0, 0, -50)
 collision_mask = 131
 
-[node name="Pistol" parent="Camera3D" node_paths=PackedStringArray("ray_cast", "audio_player") instance=ExtResource("2_ku3gn")]
-transform = Transform3D(-0.0248529, 0, 1.99985, 0, 2, 0, -1.99985, 0, -0.0248529, 0.596381, -0.378434, -0.683651)
-spread_increase_per_shot = 50.0
-ray_cast = NodePath("../RayCast3D")
-audio_player = NodePath("../../AudioStreamPool")
+[node name="Hand" type="Node3D" parent="Camera3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.49688, -0.253111, -0.552979)
 
-[node name="Rifle" parent="Camera3D" node_paths=PackedStringArray("ray_cast", "audio_player") instance=ExtResource("3_mdciq")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.323528, -0.275937, -0.325071)
+[node name="Pistol" parent="Camera3D/Hand" node_paths=PackedStringArray("ray_cast", "audio_player") instance=ExtResource("2_ku3gn")]
+spread_increase_per_shot = 50.0
+ray_cast = NodePath("../../RayCast3D")
+audio_player = NodePath("../../../AudioStreamPool")
+
+[node name="Rifle" parent="Camera3D/Hand" node_paths=PackedStringArray("ray_cast", "audio_player") instance=ExtResource("3_mdciq")]
 visible = false
 spread = 10.0
 spread_max = 300.0
-ray_cast = NodePath("../RayCast3D")
-audio_player = NodePath("../../AudioStreamPool")
+ray_cast = NodePath("../../RayCast3D")
+audio_player = NodePath("../../../AudioStreamPool")
 
-[node name="DebugGun" parent="Camera3D" node_paths=PackedStringArray("ray_cast") instance=ExtResource("4_1b3c8")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.201971, 0)
+[node name="DebugGun" parent="Camera3D/Hand" node_paths=PackedStringArray("ray_cast") instance=ExtResource("4_1b3c8")]
 visible = false
 can_hit = false
-ray_cast = NodePath("../RayCast3D")
+ray_cast = NodePath("../../RayCast3D")
 
-[node name="Shotgun" parent="Camera3D" node_paths=PackedStringArray("ray_cast", "audio_player") instance=ExtResource("8_hrexx")]
-transform = Transform3D(-4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, 0.311509, -0.175797, -0.330441)
+[node name="Shotgun" parent="Camera3D/Hand" node_paths=PackedStringArray("ray_cast", "audio_player") instance=ExtResource("8_hrexx")]
 visible = false
-ray_cast = NodePath("../RayCast3D")
-audio_player = NodePath("../../AudioStreamPool")
+ray_cast = NodePath("../../RayCast3D")
+audio_player = NodePath("../../../AudioStreamPool")
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="Camera3D"]
 root_node = NodePath("../..")
