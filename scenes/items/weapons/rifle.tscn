@@ -237,7 +237,15 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.0980574, 0.152908)
 [node name="rifle" parent="Node3D" instance=ExtResource("2_uh0k2")]
 transform = Transform3D(-3.61999e-06, 0, -1, 0, 1, 0, 1, 0, -3.61999e-06, 0, 0, 0)
 
+[node name="Rifle" parent="Node3D/rifle" index="0"]
+layers = 65536
+
+[node name="magazin" parent="Node3D/rifle/Rifle" index="0"]
+layers = 65536
+
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 libraries = {
 "": SubResource("AnimationLibrary_tx4q6")
 }
+
+[editable path="Node3D/rifle"]

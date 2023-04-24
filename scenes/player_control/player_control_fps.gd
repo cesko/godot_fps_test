@@ -16,6 +16,9 @@ class_name PlayerControlFps
 @export var debug_gun:Weapon
 @export var has_debug_gun:bool = true
 
+@onready var fps_camera = $Camera3D/SubViewportContainer/SubViewport/FpsCamera
+
+
 # Internals
 var weapon_equipped:Weapon
 
@@ -67,6 +70,7 @@ func _unhandled_input(event):
 	
 
 func _process(delta):
+	fps_camera.global_transform = camera.global_transform
 	pass
 	if _sprint_meter < sprint_meter_max:
 		if _is_dashing == false:

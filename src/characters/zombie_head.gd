@@ -10,6 +10,9 @@ signal attack_player(damage:float)
 @export var attack_range:float = 1.5
 @export var attack_damage:float = 1.0
 
+@export var attack_cooldown_msec:int = 1000
+var last_attack:float = 0
+
 @export var base_color:Color = Color(100.0/255, 150.0/255, 50.0/255)
 
 var gravity = ProjectSettings.get_setting("physics/3d/default_gravity")
@@ -64,6 +67,11 @@ func target_in_range() -> bool:
 	return global_position.distance_squared_to(target.global_position) <= attack_range_squared
 
 func attack():
+	if Time.get_ticks_msec() < last_attack + attack_cooldown_msec:
+		return
+	
+	audio_player.play(sfx_attack)
+	last_attack = Time.get_ticks_msec()	 
 	if target_in_range() and alive:
 		var hit_info = HitInfo.new()
 		hit_info.hit_value = attack_damage

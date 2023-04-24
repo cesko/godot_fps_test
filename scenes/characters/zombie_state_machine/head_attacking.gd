@@ -9,6 +9,8 @@ func handle_input(_event: InputEvent) -> void:
 func update(_delta: float) -> void:	
 	if not owner.target_in_range():
 		state_machine.transition_to("Moving")	
+	else:
+		owner.attack()
 	
 
 # Virtual function. Corresponds to the `_physics_process()` callback.
@@ -19,7 +21,6 @@ func physics_update(_delta: float) -> void:
 # Virtual function. Called by the state machine upon changing the active state. The `msg` parameter
 # is a dictionary with arbitrary data the state can use to initialize itself.
 func enter(_msg := {}) -> void:
-	owner.audio_player.play(owner.sfx_attack)
 	owner.attack()
 
 

@@ -241,3 +241,8 @@ libraries = {
 transform = Transform3D(-4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, 0, 0.00843772, 0.0228107)
 
 [node name="shotgun" parent="Node3D" instance=ExtResource("2_ekd28")]
+
+[node name="Cube" parent="Node3D/shotgun" index="0"]
+layers = 65537
+
+[editable path="Node3D/shotgun"]
