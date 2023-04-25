@@ -19,6 +19,25 @@ If you like capsule meshes in bold colours.
 ### Enemy Variety!
 Several different types of zombies are coming for your brain! Normal zombies, fast zombies and zombies throwing their own head. What more could you want?
 
+Controls
+--------
+
+- WASD to move
+- Mouse to look around
+- Left mouse button to shoot
+- Shift to dash 
+- Switch weapons with 1,2,3 or using the mouse wheel
+
+How to edit / run the game
+--------------------------
+
+1. Clone the repository. Alternatively, [download](https://github.com/cesko/godot_fps_test/archive/refs/heads/main.zip) the game files as a zip-archive. Unzip the archive into a new directory (e.g. called `fps_test`) 
+2. Download and unzip Godot 4.0 (https://godotengine.org/download) (I am using version 4.0.2 Standard 64 bit)
+3. Run the Godot executable (e.g. on Windows: `Godot_v4.0.2-stable_win64.exe`)
+4. In the Godot *Project Manager* window, select *Import Project*
+5. In the *Import Existing Project* window, click *Browse* and navigate to the game files from step 1. Select the `project.godot` file and click *Open* 
+6. Click *Import & Edit* to open the game in the Godot editor
+7. To run the project, click the start button on the top right or hit F5
 
 Attribution
 -----------
