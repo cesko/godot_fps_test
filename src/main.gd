@@ -15,7 +15,7 @@ var map
 @export var waves : Array[Wave]
 @export var initial_wave:int = 0
 
-var _current_wave = initial_wave - 1
+@onready var _current_wave = initial_wave - 1
 var _active_enemies = 0
 var _enemies_killed_in_wave = 0
 var _wave_finished = true
@@ -57,12 +57,14 @@ func load_hud():
 	var hud_notification = preload("res://scenes/hud/hud_large_notification.tscn").instantiate()
 	var hud_push_notification = preload("res://scenes/hud/push_notification.tscn").instantiate()
 	var wave_counter = preload("res://scenes/hud/hud_wave_counter.tscn").instantiate()
+	var quick_slots = preload("res://scenes/hud/hud_quick_select.tscn").instantiate()
 	hud.add_child(crosshair)
 	hud.add_child(hud_health)
 	hud.add_child(hud_weapon_info)
 	hud.add_child(hud_notification)
 	hud.add_child(hud_push_notification)
 	hud.add_child(wave_counter)
+	hud.add_child(quick_slots)
 	
 	# set globals
 	GameManager.hud.health_display = hud_health
@@ -71,6 +73,7 @@ func load_hud():
 	GameManager.hud.notification = hud_notification
 	GameManager.hud.push_notification = hud_push_notification
 	GameManager.hud.wave_counter = wave_counter
+	GameManager.hud.quick_slots = quick_slots
 
 func hide_node_children(n:Node):
 	if n.has_method("hide"):
@@ -190,6 +193,7 @@ func spawn_zombie_head(tf:Transform3D, initial_velocity:Vector3, color:Color):
 	_enemy_counter_mutex.lock()
 	_active_enemies += 1
 	_enemy_counter_mutex.unlock()
+	update_wave_info()
 	
 	
 func spawn_zombie():

@@ -158,7 +158,6 @@ ammunition = SubResource("Resource_yftk4")
 pistol = NodePath("Camera3D/Hand/Pistol")
 has_pistol = true
 rifle = NodePath("Camera3D/Hand/Rifle")
-has_rifle = true
 shotgun = NodePath("Camera3D/Hand/Shotgun")
 debug_gun = NodePath("Camera3D/Hand/DebugGun")
 attributes = SubResource("Resource_76bfs")

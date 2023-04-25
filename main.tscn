@@ -1,4 +1,4 @@
-[gd_scene load_steps=11 format=3 uid="uid://c15ub8kdcipgt"]
+[gd_scene load_steps=12 format=3 uid="uid://c15ub8kdcipgt"]
 
 [ext_resource type="Script" path="res://src/main.gd" id="1_3oqei"]
 [ext_resource type="PackedScene" uid="uid://1pi66kn11gia" path="res://scenes/misc/cartesian_frame.tscn" id="2_duo0o"]
@@ -55,20 +55,30 @@ probability_fast_zombie = 0.7
 probability_lightheaded_zombie = 0.5
 nominal_spawn_interval_sec = 4.0
 
+[sub_resource type="Resource" id="Resource_c8gkg"]
+script = ExtResource("3_r2bbh")
+total_number_of_zombies = 60
+initial_number_of_zombies = 20
+minimum_number_of_zombies = 10
+probability_normal_zombie = 1.0
+probability_fast_zombie = 1.0
+probability_lightheaded_zombie = 0.3
+nominal_spawn_interval_sec = 2.0
+
 [sub_resource type="Resource" id="Resource_2wqny"]
 script = ExtResource("3_r2bbh")
 total_number_of_zombies = 35
 initial_number_of_zombies = 35
 minimum_number_of_zombies = 1
-probability_normal_zombie = 0.5
-probability_fast_zombie = 0.5
+probability_normal_zombie = 1.0
+probability_fast_zombie = 1.0
 probability_lightheaded_zombie = 0.5
 nominal_spawn_interval_sec = 5.0
 
 [node name="Main" type="Node"]
 script = ExtResource("1_3oqei")
 zombie_map = ExtResource("2_wqhw1")
-waves = Array[ExtResource("3_r2bbh")]([SubResource("Resource_onq77"), SubResource("Resource_lwy7w"), SubResource("Resource_otlvx"), SubResource("Resource_ewmh7"), SubResource("Resource_pavyx"), SubResource("Resource_2wqny")])
+waves = Array[ExtResource("3_r2bbh")]([SubResource("Resource_onq77"), SubResource("Resource_lwy7w"), SubResource("Resource_otlvx"), SubResource("Resource_ewmh7"), SubResource("Resource_pavyx"), SubResource("Resource_c8gkg"), SubResource("Resource_2wqny")])
 
 [node name="World" type="Node" parent="."]
 

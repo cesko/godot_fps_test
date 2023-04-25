@@ -12,12 +12,13 @@ class_name PlayerControlFps
 @export var rifle:Weapon
 @export var has_rifle:bool 
 @export var shotgun:Weapon
-@export var has_shotgun:bool = true
+@export var has_shotgun:bool
 @export var debug_gun:Weapon
-@export var has_debug_gun:bool = true
+@export var has_debug_gun:bool
 
 @onready var fps_camera = $Camera3D/SubViewportContainer/SubViewport/FpsCamera
 
+var inventory_quick_slots = InventoryQuickSlots.new()
 
 # Internals
 var weapon_equipped:Weapon
@@ -40,9 +41,23 @@ func _ready():
 		var weapon = all_weapons[w]
 		weapon.ammunition_reserve = ammunition
 		weapon.ammunition_updated.connect(GameManager.hud.update_ammunition)
+		
 	equip_weapon("pistol")
+	update_quick_slots()
 	super()
-	
+
+func update_quick_slots():
+	inventory_quick_slots.empty()
+	for w in all_weapons:
+		var weapon = all_weapons[w]
+		
+		if has_weapons[w]:
+			var ie = InventoryElement.new()
+			ie.element = weapon
+			ie.text = weapon.inventory_text
+			ie.icon = weapon.inventory_icon
+			inventory_quick_slots.add_element(ie)
+	GameManager.hud.quick_slots.update(inventory_quick_slots)
 
 func _unhandled_input(event):	
 	if active and event is InputEventMouseMotion:
@@ -50,14 +65,23 @@ func _unhandled_input(event):
 		camera.rotate_x(-event.relative.y * Settings.mouse_sensitivity)
 		camera.rotation.x = clamp(camera.rotation.x, -PI/2, PI/2)
 		
-	if Input.is_action_just_pressed("equip_pistol"):
-		equip_weapon("pistol")
+	if Input.is_action_just_pressed("quick_select_1"):
+		equip_from_inventory(inventory_quick_slots.get_slot(0))
+		# equip_weapon("pistol")
 
-	if Input.is_action_just_pressed("equip_rifle"):
-		equip_weapon("rifle")
+	if Input.is_action_just_pressed("quick_select_2"):
+		equip_from_inventory(inventory_quick_slots.get_slot(1))
+		# equip_weapon("rifle")
 	
-	if Input.is_action_just_pressed("equip_shotgun"):
-		equip_weapon("shotgun")
+	if Input.is_action_just_pressed("quick_select_3"):
+		equip_from_inventory(inventory_quick_slots.get_slot(2))
+		# equip_weapon("shotgun")
+	
+	if Input.is_action_just_pressed("equip_next_weapon"):
+		equip_from_inventory(inventory_quick_slots.get_next_slot())
+		
+	if Input.is_action_just_pressed("equip_previous_weapon"):
+		equip_from_inventory(inventory_quick_slots.get_previous_slot())
 
 	if Input.is_action_just_pressed("equip_debug_gun"):
 		equip_weapon("debug_gun")
@@ -111,6 +135,28 @@ func _physics_process(delta):
 
 	apply_movement()
 
+func equip_from_inventory(ie:InventoryElement):
+	GameManager.hud.quick_slots.update(inventory_quick_slots)
+	if ie == null:
+		return
+	
+	var weapon = ie.element
+	print("equipping weapon: " + str(weapon))
+	if weapon_equipped == weapon:
+		return
+	
+	if weapon_equipped:
+		weapon_equipped.unequip()
+		await weapon_equipped.unequipped
+		weapon_equipped.hide()
+	
+	weapon_equipped = weapon
+	weapon_equipped.show()
+	weapon_equipped.equip()
+	
+	GameManager.hud.quick_slots.update(inventory_quick_slots)
+	
+	
 func equip_weapon(weapon_name:String):
 	if has_weapons[weapon_name] == false:
 		print("Weapon not in inventory")
@@ -132,22 +178,22 @@ func equip_weapon(weapon_name:String):
 
 
 func handle_event(event:TriggerEvent) -> bool:
-	print("FPS handle event")
 	if super(event) == true:
 		return true
 	
-	print("FPS handle event")
 	
 	if event is	TriggerEventPickupAmmunition:
+		ammunition.change_bullets(event.type, event.amount)
 		if not ammunition.is_full(event.type):
-			ammunition.change_bullets(event.type, event.amount)
 			if audio_stream:
 				audio_stream.play(preload("res://assets/audio/ammu_pickup.mp3"))
 	
 	if event is TriggerEventPickupWeapon:
+		GameManager.hud.quick_slots.update(inventory_quick_slots)
 		has_weapons[event.weapon] = true
 		if audio_stream:
-			audio_stream.play(preload("res://assets/audio/ammu_pickup.mp3"))	
+			audio_stream.play(preload("res://assets/audio/ammu_pickup.mp3"))
+		update_quick_slots()
 	
 	else:
 		print("unhandled event: " + str(event.get_class()))

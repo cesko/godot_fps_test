@@ -12,6 +12,7 @@
 [node name="decal_blood_splat" type="Decal"]
 size = Vector3(2, 0.1, 2)
 modulate = Color(0.745098, 0, 0.0823529, 1)
+cull_mask = 425847
 script = ExtResource("1_tiyn3")
 textures = Array[Texture]([ExtResource("4_chaoo"), ExtResource("5_ybsy7"), ExtResource("4_amoie"), ExtResource("5_gpjkj"), ExtResource("6_jcrbi"), ExtResource("7_202v2")])
 

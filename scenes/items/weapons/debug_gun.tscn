@@ -10,6 +10,7 @@
 [node name="DebugGun" type="Node3D" groups=["weapons"]]
 script = ExtResource("1_gne2u")
 shoot_time_msec = 10
+inventory_text = "Debug Gun"
 
 [node name="HitEffects" type="Node" parent="."]
 

@@ -37,6 +37,9 @@ var anim_unequip = "unequip"
 @export var sfx_reload: AudioStream
 @export var sfx_empty: AudioStream
 
+@export var inventory_text:String
+@export var inventory_icon:Texture
+
 # Internals
 var _cooldown_until:int = -1
 var _equipped:bool = false

@@ -53,7 +53,8 @@ func update(_delta: float) -> void:
 	look_at_position.x += new_velocity.x
 	look_at_position.z += new_velocity.z
 	
-	owner.look_at(look_at_position)
+	if current_location.is_equal_approx(look_at_position) == false and look_at_position - current_location != Vector3.UP:
+		owner.look_at(look_at_position)
 
 	pass
 

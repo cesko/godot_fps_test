@@ -1,0 +1,30 @@
+[gd_scene load_steps=4 format=3 uid="uid://bq310bdw0wimb"]
+
+[ext_resource type="Script" path="res://src/hud/hud_inventory_slot.gd" id="1_d2gye"]
+[ext_resource type="Texture2D" uid="uid://doelcwnpsrrjb" path="res://assets/textures/inventory_icons/pistol_icon.png" id="1_e0h7q"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_yiak3"]
+resource_local_to_scene = true
+resource_name = "selected"
+bg_color = Color(0.6, 0.6, 0.6, 0.294118)
+border_width_left = 5
+border_width_top = 5
+border_width_right = 5
+border_width_bottom = 5
+border_color = Color(0.333333, 0, 0.137255, 1)
+
+[node name="HudInventorySlot" type="PanelContainer"]
+custom_minimum_size = Vector2(100, 100)
+theme_override_styles/panel = SubResource("StyleBoxFlat_yiak3")
+script = ExtResource("1_d2gye")
+
+[node name="TextureRect" type="TextureRect" parent="."]
+layout_mode = 2
+texture = ExtResource("1_e0h7q")
+expand_mode = 3
+
+[node name="Label" type="Label" parent="."]
+layout_mode = 2
+size_flags_vertical = 8
+text = "Pistol"
+horizontal_alignment = 1

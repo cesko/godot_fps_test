@@ -54,6 +54,6 @@ func set_bullets (type:Type, new_count:int):
 	clamp_bullets()
 
 func clamp_bullets():
-	pistol_bullets = min(pistol_bullets, pistol_bullets_max)
-	assault_bullets  = min(assault_bullets, assault_bullets_max)
-	shotgun_shells  = min(shotgun_shells, shotgun_shells_max)
+	pistol_bullets = max(min(pistol_bullets, pistol_bullets_max), 0)
+	assault_bullets  = max(min(assault_bullets, assault_bullets_max), 0)
+	shotgun_shells  = max(min(shotgun_shells, shotgun_shells_max), 0)

@@ -1,10 +1,11 @@
-[gd_scene load_steps=14 format=3 uid="uid://bq2n14c8lujou"]
+[gd_scene load_steps=15 format=3 uid="uid://bq2n14c8lujou"]
 
 [ext_resource type="Script" path="res://src/items/weapon.gd" id="1_1fyor"]
 [ext_resource type="PackedScene" uid="uid://cnvi87qiicoiy" path="res://assets/models/weapons/pistol.blend" id="2_1be7r"]
 [ext_resource type="AudioStream" uid="uid://ba34oq0tht7sm" path="res://assets/audio/pistol_shot.mp3" id="2_522i0"]
 [ext_resource type="AudioStream" uid="uid://ekkx2xto8bwt" path="res://assets/audio/pistol_reload.mp3" id="3_u1aps"]
 [ext_resource type="AudioStream" uid="uid://cadl11ysjq0t" path="res://assets/audio/pistol_empty.mp3" id="4_718ai"]
+[ext_resource type="Texture2D" uid="uid://doelcwnpsrrjb" path="res://assets/textures/inventory_icons/pistol_icon.png" id="5_rsfyn"]
 
 [sub_resource type="Animation" id="Animation_ioykg"]
 length = 0.001
@@ -221,6 +222,8 @@ animation_player = NodePath("AnimationPlayer")
 sfx_shoot = ExtResource("2_522i0")
 sfx_reload = ExtResource("3_u1aps")
 sfx_empty = ExtResource("4_718ai")
+inventory_text = "Pistol"
+inventory_icon = ExtResource("5_rsfyn")
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 libraries = {

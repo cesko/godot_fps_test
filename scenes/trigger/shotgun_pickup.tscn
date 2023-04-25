@@ -1,18 +1,12 @@
-[gd_scene load_steps=11 format=3 uid="uid://bn1j31n1fpwjr"]
+[gd_scene load_steps=9 format=3 uid="uid://bnkwb2dwjadc6"]
 
-[ext_resource type="Script" path="res://src/trigger/trigger.gd" id="1_5kvqb"]
-[ext_resource type="Script" path="res://src/trigger/trigger_event_pickup_weapon.gd" id="2_w48au"]
-[ext_resource type="PackedScene" uid="uid://fjo7g2p3nhdd" path="res://assets/models/weapons/rifle.blend" id="3_7wyeu"]
-[ext_resource type="Script" path="res://src/trigger/trigger_event_pickup_ammunition.gd" id="3_o65fa"]
-
-[sub_resource type="Resource" id="Resource_edhqs"]
-script = ExtResource("3_o65fa")
-type = 2
-amount = -1000
+[ext_resource type="Script" path="res://src/trigger/trigger.gd" id="1_vwtfq"]
+[ext_resource type="Script" path="res://src/trigger/trigger_event_pickup_weapon.gd" id="2_gpide"]
+[ext_resource type="PackedScene" uid="uid://cjoa63gjsi7cc" path="res://assets/models/weapons/shotgun.blend" id="3_tu6fy"]
 
 [sub_resource type="Resource" id="Resource_fkv60"]
-script = ExtResource("2_w48au")
-weapon = "rifle"
+script = ExtResource("2_gpide")
+weapon = "shotgun"
 
 [sub_resource type="CylinderShape3D" id="CylinderShape3D_ysgy2"]
 height = 1.0
@@ -79,9 +73,9 @@ _data = {
 "floating": SubResource("Animation_tif0f")
 }
 
-[node name="RiflePickup" type="Node3D"]
-script = ExtResource("1_5kvqb")
-events = Array[Resource("res://src/trigger/trigger_event.gd")]([SubResource("Resource_edhqs"), SubResource("Resource_fkv60")])
+[node name="ShotgunPickup" type="Node3D"]
+script = ExtResource("1_vwtfq")
+events = Array[Resource("res://src/trigger/trigger_event.gd")]([SubResource("Resource_fkv60")])
 remove_on_trigger = true
 
 [node name="Area3D" type="Area3D" parent="."]
@@ -95,8 +89,8 @@ shape = SubResource("CylinderShape3D_ysgy2")
 [node name="Visual" type="Node3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
 
-[node name="rifle" parent="Visual" instance=ExtResource("3_7wyeu")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.260435, 0, 0)
+[node name="shotgun" parent="Visual" instance=ExtResource("3_tu6fy")]
+transform = Transform3D(1.21982, 0.687052, 0, -0.687052, 1.21982, 0, 0, 0, 1.4, 0.417768, -0.240775, 0)
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 autoplay = "floating"

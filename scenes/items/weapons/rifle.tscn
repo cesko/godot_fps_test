@@ -1,10 +1,11 @@
-[gd_scene load_steps=14 format=3 uid="uid://q24afikip7mk"]
+[gd_scene load_steps=15 format=3 uid="uid://q24afikip7mk"]
 
 [ext_resource type="Script" path="res://src/items/weapon.gd" id="1_1yy3r"]
 [ext_resource type="PackedScene" uid="uid://fjo7g2p3nhdd" path="res://assets/models/weapons/rifle.blend" id="2_uh0k2"]
 [ext_resource type="AudioStream" uid="uid://claq71uulmeqt" path="res://assets/audio/rifle_shot.mp3" id="2_xbhs0"]
 [ext_resource type="AudioStream" uid="uid://dvnrnou23u4gb" path="res://assets/audio/rifle_reload.mp3" id="3_81u8n"]
 [ext_resource type="AudioStream" uid="uid://cadl11ysjq0t" path="res://assets/audio/pistol_empty.mp3" id="4_cdeol"]
+[ext_resource type="Texture2D" uid="uid://b1uypj0tukjd4" path="res://assets/textures/inventory_icons/rifle_icon.png" id="5_jb6rp"]
 
 [sub_resource type="Animation" id="Animation_5u2ke"]
 length = 0.001
@@ -230,6 +231,8 @@ animation_player = NodePath("AnimationPlayer")
 sfx_shoot = ExtResource("2_xbhs0")
 sfx_reload = ExtResource("3_81u8n")
 sfx_empty = ExtResource("4_cdeol")
+inventory_text = "Rifle"
+inventory_icon = ExtResource("5_jb6rp")
 
 [node name="Node3D" type="Node3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.0980574, 0.152908)

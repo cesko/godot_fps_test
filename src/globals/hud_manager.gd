@@ -8,6 +8,7 @@ var crosshair
 var notification
 var push_notification
 var wave_counter
+var quick_slots
 
 func update_health(health:float, max:float):
 	if health_display:

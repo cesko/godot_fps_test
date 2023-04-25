@@ -15,7 +15,7 @@ func update(_delta: float) -> void:
 		state_machine.transition_to("Attacking")
 		return
 	
-	var current_location = owner.global_transform.origin
+	var current_location:Vector3 = owner.global_transform.origin
 	var next_location = owner.nav_agent.get_next_path_position()
 	var new_velocity = (next_location - current_location).normalized() * owner.moving_speed
 
@@ -39,7 +39,8 @@ func update(_delta: float) -> void:
 	look_at_position.x += new_velocity.x
 	look_at_position.z += new_velocity.z
 	
-	owner.look_at(look_at_position)
+	if current_location.is_equal_approx(look_at_position) == false and look_at_position - current_location != Vector3.UP:
+		owner.look_at(look_at_position)
 
 	pass
 

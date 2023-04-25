@@ -78,7 +78,10 @@ func attack():
 	await get_tree().create_timer(0.001 * attack_delay_msec).timeout
 	if target_in_range() and alive:
 		var hit_info = HitInfo.new()
-		hit_info.hit_value = attack_damage
+		var damage = attack_damage
+		if headless:
+			damage = 0.5
+		hit_info.hit_value = damage
 		target.hit(hit_info)
 
 func throw_head():

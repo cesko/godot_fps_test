@@ -8,6 +8,7 @@ var enemy_spawns := []
 @onready var trigger_health = $InstantHealth
 @onready var trigger_ammu = $InstantAmmu
 @onready var rifle_pickup = $RiflePickup
+@onready var shotgun_pickup = $ShotgunPickup
 
 @onready var _trigger_health_tf = trigger_health.global_transform
 
@@ -17,6 +18,8 @@ func _ready():
 	enemy_spawns = find_child("EnemySpawns").get_children()
 	rifle_pickup.hide()
 	rifle_pickup.enabled = false
+	shotgun_pickup.hide()
+	shotgun_pickup.enabled = false
 
 func get_random_spawn( list_of_spawns:Array ) -> Transform3D:
 	var tf = Transform3D()
@@ -61,5 +64,11 @@ func wave_cleared(wave):
 		print("health:" + str(trigger_health))
 	
 	if wave == 1:
-		rifle_pickup.show()
-		rifle_pickup.enabled = true
+		if rifle_pickup:
+			rifle_pickup.show()
+			rifle_pickup.enabled = true
+	
+	if wave == 3:
+		if shotgun_pickup:
+			shotgun_pickup.show()
+			shotgun_pickup.enabled = true

@@ -54,6 +54,9 @@ func hit(hit_info:HitInfo):
 	if alive and health <= 0:
 		alive = false
 		_on_death()
+	else:
+		velocity = 1 * hit_info.hit_direction
+		
 		
 
 func change_color(c:Color) -> void:
