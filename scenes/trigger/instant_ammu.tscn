@@ -1,4 +1,4 @@
-[gd_scene load_steps=16 format=3 uid="uid://b6b30bqyrbajj"]
+[gd_scene load_steps=17 format=3 uid="uid://b6b30bqyrbajj"]
 
 [ext_resource type="Script" path="res://src/trigger/trigger.gd" id="1_bt0g8"]
 [ext_resource type="Script" path="res://src/trigger/trigger_event_pickup_ammunition.gd" id="2_gvme0"]
@@ -19,6 +19,11 @@ amount = 15
 script = ExtResource("2_gvme0")
 type = 3
 amount = 12
+
+[sub_resource type="Resource" id="Resource_3dvkt"]
+script = ExtResource("2_gvme0")
+type = 4
+amount = 1
 
 [sub_resource type="CylinderShape3D" id="CylinderShape3D_ysgy2"]
 height = 1.0
@@ -108,7 +113,7 @@ _data = {
 
 [node name="InstantAmmu" type="Node3D"]
 script = ExtResource("1_bt0g8")
-events = Array[Resource("res://src/trigger/trigger_event.gd")]([SubResource("Resource_mr6c0"), SubResource("Resource_hxm47"), SubResource("Resource_0gjmu")])
+events = Array[Resource("res://src/trigger/trigger_event.gd")]([SubResource("Resource_mr6c0"), SubResource("Resource_hxm47"), SubResource("Resource_0gjmu"), SubResource("Resource_3dvkt")])
 single_event = false
 event_delay_sec = 0.5
 

@@ -4,11 +4,15 @@ var bullet_holes = DecalPool.new(32, preload("res://scenes/gfx/decal_bullet_hole
 var impact_particles = ParticlePool.new(3, preload("res://scenes/gfx/particles_impact.tscn"))
 var blood_splash_particles = ParticlePool.new(3, preload("res://scenes/gfx/particles_blood_splash02.tscn"))
 var blood_splat_decals = DecalPool.new(32, preload("res://scenes/gfx/decal_blood_splat.tscn"))
+
+var sfx_pool = AudioStreamPool.new(32) 
+
 func _ready():
 	add_child(bullet_holes)
 	add_child(impact_particles)	
 	add_child(blood_splash_particles)
 	add_child(blood_splat_decals)
+	add_child(sfx_pool)
 
 func add_generic_bullet_hole(tf:Transform3D):
 	bullet_holes.add(tf)
@@ -42,3 +46,5 @@ func world_hit(hit_info:HitInfo):
 		pass
 	add_generic_impact_particles(tf)
 
+func play_world_sfx(audio:AudioStream, from_position:float=0.0, pos:=Vector3.ZERO):
+	sfx_pool.play(audio, from_position, pos)

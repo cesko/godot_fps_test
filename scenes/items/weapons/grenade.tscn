@@ -1,0 +1,53 @@
+[gd_scene load_steps=9 format=3 uid="uid://g24b8vuxn0i3"]
+
+[ext_resource type="Script" path="res://src/items/Grenade.gd" id="1_wce1r"]
+[ext_resource type="PackedScene" uid="uid://q1urt6jyi614" path="res://scenes/gfx/particles_explosion.tscn" id="2_fsfi6"]
+[ext_resource type="AudioStream" uid="uid://dpg7hhjpxd8lj" path="res://assets/audio/grenade_explosion.mp3" id="2_ibd3i"]
+[ext_resource type="Material" uid="uid://dpu7yru5kfw7d" path="res://assets/materials/bottle_green_material.tres" id="2_lwuxc"]
+
+[sub_resource type="PhysicsMaterial" id="PhysicsMaterial_i1xm0"]
+friction = 100.0
+bounce = 0.25
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_jcvj5"]
+material = ExtResource("2_lwuxc")
+top_radius = 0.05
+bottom_radius = 0.05
+height = 0.15
+radial_segments = 16
+rings = 2
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_ucdyw"]
+radius = 0.1
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_1whh8"]
+radius = 5.0
+
+[node name="Grenade" type="RigidBody3D" node_paths=PackedStringArray("explosion_area", "explosion_particle_effect")]
+collision_layer = 2
+collision_mask = 32803
+inertia = Vector3(0.1, 0.1, 0.1)
+physics_material_override = SubResource("PhysicsMaterial_i1xm0")
+linear_damp = 0.2
+script = ExtResource("1_wce1r")
+damage = 10.0
+explosion_delay = 2.0
+explosion_area = NodePath("Area3D")
+explosion_particle_effect = NodePath("ParticlesExplosion")
+explosion_sfx = ExtResource("2_ibd3i")
+impulse_multiplier = null
+
+[node name="ParticlesExplosion" parent="." instance=ExtResource("2_fsfi6")]
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+mesh = SubResource("CylinderMesh_jcvj5")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+shape = SubResource("SphereShape3D_ucdyw")
+
+[node name="Area3D" type="Area3D" parent="."]
+collision_layer = 0
+collision_mask = 129
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Area3D"]
+shape = SubResource("SphereShape3D_1whh8")

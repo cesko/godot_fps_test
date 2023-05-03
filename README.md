@@ -60,4 +60,7 @@ I would like to give attribution to the nice authors providing the free resource
  - [Uberproduktion: Shot Rifle 39 mm](https://pixabay.com/sound-effects/shot-rifle-39-mm-37542/)
  - [FilmmakersManual: Shotgun Firing (3)](https://pixabay.com/sound-effects/shotgun-firing-3-14483/)
  - [lumikon: Shotgun reload sfx](https://pixabay.com/sound-effects/shotgun-reload-sfx-36524/)
-
+ - [surfaceknight68: monster-chase-grunts](https://pixabay.com/sound-effects/monster-chase-grunts-45476/)
+ - [vmgraw: Running 1](https://pixabay.com/sound-effects/running-1-6846/)
+ - [morganpurkis: Explosion](https://pixabay.com/sound-effects/explosion-42132/)
+ - [stubb: Thump 1](https://pixabay.com/sound-effects/thump-1-79982/)

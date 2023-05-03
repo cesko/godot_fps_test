@@ -1,0 +1,53 @@
+[gd_scene load_steps=10 format=3 uid="uid://q1urt6jyi614"]
+
+[ext_resource type="Script" path="res://src/gfx/particle_set.gd" id="1_vq1eu"]
+[ext_resource type="Texture2D" uid="uid://4wacw5bwx6cx" path="res://addons/kenney_particle_pack/fire_01.png" id="2_ef1it"]
+
+[sub_resource type="Gradient" id="Gradient_vpdbn"]
+offsets = PackedFloat32Array(0.328638, 1)
+colors = PackedColorArray(1, 0, 0, 1, 1, 1, 1, 0)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_k0onv"]
+gradient = SubResource("Gradient_vpdbn")
+
+[sub_resource type="Curve" id="Curve_6nn1p"]
+_data = [Vector2(0.00819672, 0), 0.0, 2.85195, 0, 0, Vector2(1, 1), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="CurveTexture" id="CurveTexture_tplvu"]
+curve = SubResource("Curve_6nn1p")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_dnyec"]
+spread = 180.0
+gravity = Vector3(0, 0, 0)
+initial_velocity_min = 2.0
+initial_velocity_max = 5.0
+scale_min = 10.0
+scale_max = 10.0
+scale_curve = SubResource("CurveTexture_tplvu")
+color_ramp = SubResource("GradientTexture1D_k0onv")
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_04chu"]
+transparency = 1
+vertex_color_use_as_albedo = true
+albedo_color = Color(1, 0.717647, 0, 1)
+albedo_texture = ExtResource("2_ef1it")
+emission_enabled = true
+emission = Color(1, 0.670588, 0, 1)
+
+[sub_resource type="QuadMesh" id="QuadMesh_2s332"]
+material = SubResource("StandardMaterial3D_04chu")
+size = Vector2(0.5, 0.5)
+
+[node name="ParticlesExplosion" type="Node3D"]
+script = ExtResource("1_vq1eu")
+
+[node name="GPUParticles3D" type="GPUParticles3D" parent="."]
+emitting = false
+amount = 16
+lifetime = 0.4
+one_shot = true
+explosiveness = 0.78
+transform_align = 3
+process_material = SubResource("ParticleProcessMaterial_dnyec")
+draw_pass_1 = SubResource("QuadMesh_2s332")

@@ -7,7 +7,7 @@ signal ammunition_updated(magazin:int, reserve:int)
 signal spread_updated(spread:float)
 
 # Parameter
-@export var ammunition_type:Ammunition.Type
+@export var ammunition_type:AmmunitionInventory.Type
 @export var magazin_size:int = 7
 @export var damage:float = 1
 @export var current_magazin:int = 7
@@ -25,7 +25,7 @@ signal spread_updated(spread:float)
 @export var animation_player:AnimationPlayer = null
 @export var audio_player:AudioStreamPool = null
 
-var ammunition_reserve:Ammunition = null
+var ammunition_reserve:AmmunitionInventory = null
 
 var anim_idle = "idle"
 var anim_shoot = "shoot"

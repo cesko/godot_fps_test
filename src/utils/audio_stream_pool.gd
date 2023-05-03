@@ -7,6 +7,10 @@ class_name AudioStreamPool
 
 var _buffer = RingBuffer.new()  
 
+func _init(_pool_size:int=3, _use_3d_audio:bool=true):
+	pool_size = _pool_size
+	use_3d_audio = _use_3d_audio
+
 func _ready():
 	for i in range(pool_size):
 		if use_3d_audio:
@@ -17,7 +21,10 @@ func _ready():
 	for b in _buffer.get_all():
 		add_child(b)
 
-func play(audio:AudioStream, from_position:float=0.0):
+func play(audio:AudioStream, from_position:float=0.0, pos:=Vector3.ZERO):
 	var stream = _buffer.get_next()
+	if use_3d_audio:
+		stream.global_position = pos
+		pass
 	stream.stream = audio
 	stream.play(from_position)

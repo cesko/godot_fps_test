@@ -1,8 +1,9 @@
-[gd_scene load_steps=20 format=3 uid="uid://tq8rsahgfa1m"]
+[gd_scene load_steps=25 format=3 uid="uid://0tdkxphoox4e"]
 
 [ext_resource type="Script" path="res://scenes/player_control/player_control_fps.gd" id="1_luey8"]
 [ext_resource type="Script" path="res://src/utils/attribute.gd" id="2_8200q"]
-[ext_resource type="Script" path="res://src/utils/ammunition.gd" id="2_h45jv"]
+[ext_resource type="Script" path="res://src/inventory/ammunition_inventory.gd" id="2_fwo11"]
+[ext_resource type="Script" path="res://src/inventory/capacity.gd" id="2_hue70"]
 [ext_resource type="Script" path="res://src/utils/character_attributes.gd" id="2_i6aag"]
 [ext_resource type="PackedScene" uid="uid://bq2n14c8lujou" path="res://scenes/items/weapons/pistol.tscn" id="2_ku3gn"]
 [ext_resource type="PackedScene" uid="uid://q24afikip7mk" path="res://scenes/items/weapons/rifle.tscn" id="3_mdciq"]
@@ -10,23 +11,41 @@
 [ext_resource type="Script" path="res://src/utils/audio_stream_pool.gd" id="4_2t4x1"]
 [ext_resource type="PackedScene" uid="uid://sq8e7fclptg0" path="res://scenes/items/weapons/shotgun.tscn" id="8_hrexx"]
 
-[sub_resource type="Resource" id="Resource_yftk4"]
-script = ExtResource("2_h45jv")
-pistol_bullets = 28
-pistol_bullets_max = 70
-assault_bullets = 0
-assault_bullets_max = 60
-shotgun_shells = 16
-shotgun_shells_max = 52
+[sub_resource type="Resource" id="Resource_2sbua"]
+script = ExtResource("2_hue70")
+amount = 0
+max_capacity = 60
 
-[sub_resource type="Resource" id="Resource_uk3i1"]
+[sub_resource type="Resource" id="Resource_v8f77"]
+script = ExtResource("2_hue70")
+amount = 0
+max_capacity = 5
+
+[sub_resource type="Resource" id="Resource_taha3"]
+script = ExtResource("2_hue70")
+amount = 14
+max_capacity = 70
+
+[sub_resource type="Resource" id="Resource_lduxf"]
+script = ExtResource("2_hue70")
+amount = 0
+max_capacity = 52
+
+[sub_resource type="Resource" id="Resource_w0nos"]
+script = ExtResource("2_fwo11")
+pistol_ammu = SubResource("Resource_taha3")
+assault_ammu = SubResource("Resource_2sbua")
+shotgun_ammu = SubResource("Resource_lduxf")
+grenade_ammu = SubResource("Resource_v8f77")
+
+[sub_resource type="Resource" id="Resource_b8qe4"]
 script = ExtResource("2_8200q")
 current = 10.0
 maximum = 10.0
 
-[sub_resource type="Resource" id="Resource_76bfs"]
+[sub_resource type="Resource" id="Resource_en25f"]
 script = ExtResource("2_i6aag")
-health = SubResource("Resource_uk3i1")
+health = SubResource("Resource_b8qe4")
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_3jr61"]
 
@@ -154,13 +173,14 @@ collision_mask = 255
 platform_floor_layers = 4294967165
 script = ExtResource("1_luey8")
 speed = 4.0
-ammunition = SubResource("Resource_yftk4")
+ammunition = SubResource("Resource_w0nos")
 pistol = NodePath("Camera3D/Hand/Pistol")
 has_pistol = true
 rifle = NodePath("Camera3D/Hand/Rifle")
 shotgun = NodePath("Camera3D/Hand/Shotgun")
 debug_gun = NodePath("Camera3D/Hand/DebugGun")
-attributes = SubResource("Resource_76bfs")
+grenade_throw_angle_deg = 20.0
+attributes = SubResource("Resource_en25f")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
@@ -202,7 +222,6 @@ far = 2.0
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.49688, -0.253111, -0.552979)
 
 [node name="Pistol" parent="Camera3D/Hand" node_paths=PackedStringArray("ray_cast", "audio_player") instance=ExtResource("2_ku3gn")]
-spread_increase_per_shot = 50.0
 ray_cast = NodePath("../../RayCast3D")
 audio_player = NodePath("../../../AudioStreamPool")
 

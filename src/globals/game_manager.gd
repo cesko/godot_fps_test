@@ -1,12 +1,22 @@
 extends Node
 
-var hud = HudManager.new()
-var player:Node
+var hud := HudManager.new()
+var player:Node:
+	set(p):
+		player = p
+		if hud:
+			hud.update_hud()	
+		
 var world:Node
 var menu:Node
 
 enum GameStatus {NONE, RUNNING, PAUSED}
 var game_status:GameStatus = GameStatus.NONE
+
+func _notification(what):
+	if what == MainLoop.NOTIFICATION_APPLICATION_FOCUS_OUT:
+		print("focus out")
+		pause_game()
 
 func toggle_pause():
 	if game_status == GameStatus.RUNNING:

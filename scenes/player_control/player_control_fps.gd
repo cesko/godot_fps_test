@@ -5,7 +5,7 @@ class_name PlayerControlFps
 # Parameter
 @export var speed = 5.0
 @export var jump_speed = 4.5
-@export var ammunition:Ammunition
+@export var ammunition:=AmmunitionInventory.new()
 
 @export var pistol:Weapon
 @export var has_pistol:bool 
@@ -16,12 +16,17 @@ class_name PlayerControlFps
 @export var debug_gun:Weapon
 @export var has_debug_gun:bool
 
+@export var grenade_throw_delay:float = 1.0
+@export var grenade_throw_impulse:float = 10.0
+@export var grenade_throw_angle_deg:float = 30.0
+
 @onready var fps_camera = $Camera3D/SubViewportContainer/SubViewport/FpsCamera
 
 var inventory_quick_slots = InventoryQuickSlots.new()
 
 # Internals
 var weapon_equipped:Weapon
+@onready var _grenade_throw_direction = Vector3.FORWARD.rotated(Vector3.RIGHT, deg_to_rad(grenade_throw_angle_deg))
 
 @onready var all_weapons = {"pistol":pistol, "rifle":rifle, "shotgun":shotgun, "debug_gun":debug_gun}
 @onready var has_weapons = {"pistol":has_pistol, "rifle":has_rifle, "shotgun":has_shotgun, "debug_gun":has_debug_gun}
@@ -41,9 +46,11 @@ func _ready():
 		var weapon = all_weapons[w]
 		weapon.ammunition_reserve = ammunition
 		weapon.ammunition_updated.connect(GameManager.hud.update_ammunition)
+	ammunition.grenade_ammu.amount_changed.connect(GameManager.hud.update_grenades)
 		
 	equip_weapon("pistol")
 	update_quick_slots()
+	
 	super()
 
 func update_quick_slots():
@@ -181,7 +188,6 @@ func handle_event(event:TriggerEvent) -> bool:
 	if super(event) == true:
 		return true
 	
-	
 	if event is	TriggerEventPickupAmmunition:
 		ammunition.change_bullets(event.type, event.amount)
 		if not ammunition.is_full(event.type):
@@ -213,8 +219,15 @@ func _on_health_changed(health:float):
 
 func throw_grenade():
 	print("Throw Grenade!")
-	var grenade_scene = preload("res://scenes/items/weapons/water_bomb.tscn")
+	
+	if (ammunition.get_bullets(AmmunitionInventory.Type.GRENADES) <= 0):
+		return
+	
+	ammunition.change_bullets(AmmunitionInventory.Type.GRENADES, -1)
+	var grenade_scene = preload("res://scenes/items/weapons/grenade.tscn")
 	var grenade = grenade_scene.instantiate()
 	GameManager.world.add_child(grenade)
+	
 	grenade.global_transform = camera.global_transform
-	grenade.apply_impulse( 10 * (camera.global_transform.basis * Vector3.FORWARD))
+	grenade.apply_impulse( grenade_throw_impulse * (camera.global_transform.basis * _grenade_throw_direction))
+	grenade.arm()
