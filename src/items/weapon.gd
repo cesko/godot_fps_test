@@ -134,11 +134,15 @@ func shoot():
 				EffectsManager.world_hit(hit_info)
 			
 		shoot_effects()	
+		_set_cooldown(shoot_time_msec)
 	
 	else:
-		magazin_empty_effect()
 		_burst_counter = burst_shots
-	_set_cooldown(shoot_time_msec)
+		if ammunition_reserve.get_bullets(ammunition_type) > 0:
+			reload()
+		else:
+			magazin_empty_effect()
+			_set_cooldown(shoot_time_msec)
 	
 func reload():
 	if _cooling_down():

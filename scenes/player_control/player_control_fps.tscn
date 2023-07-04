@@ -178,6 +178,7 @@ pistol = NodePath("Camera3D/Hand/Pistol")
 has_pistol = true
 rifle = NodePath("Camera3D/Hand/Rifle")
 shotgun = NodePath("Camera3D/Hand/Shotgun")
+has_shotgun = true
 debug_gun = NodePath("Camera3D/Hand/DebugGun")
 grenade_throw_angle_deg = 20.0
 attributes = SubResource("Resource_en25f")
